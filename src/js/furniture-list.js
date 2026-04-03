@@ -111,14 +111,14 @@ function furnitureTemplate(item) {
     )
     .join("");
 
-  return `<li class=item-card>
+  return `<li class="item-card" data-id="${item._id}">
             <img src="${item.images[0]}" alt="${item.name}">
             <div class=furnitures-description>
                 <p class=furnitures-name>${item.name}</p>
                 <ul class=furnitures-colors>
                     ${colors}
                 </ul>
-                <p class=furnitures-price>${item.price.toLocaleString("ua-UA")} грн</p>
+                <p class=furnitures-price>${item.price.toLocaleString("uk-UA")} грн</p>
             </div>
             <button type="button" class="more-info-btn">Детальніше</button>
         </li>`;
