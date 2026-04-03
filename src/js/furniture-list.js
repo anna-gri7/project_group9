@@ -1,5 +1,7 @@
 // рендер карток 
 import * as api from "./api.js";
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 const categories = document.querySelector(".categories");
 const items = document.querySelector(".items");
@@ -153,7 +155,11 @@ async function loadFurniture(reset = false) {
       showLoadMoreButton();
     }
   } catch (error) {
-    console.error("Помилка завантаження:", error);
+    iziToast.show({
+        message: `Error: ${error}`,
+        color: 'red',
+        position: 'topRight',
+    });
   } finally {
     loadBtn.disabled = false;
   }

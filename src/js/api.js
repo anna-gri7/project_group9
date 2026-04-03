@@ -1,5 +1,7 @@
 // запити
 import axios from 'axios';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 axios.defaults.baseURL = 'https://furniture-store-v2.b.goit.study/api';
 
@@ -8,7 +10,11 @@ export async function getCategories() {
     const { data } = await axios.get('/categories');
     return data;
   } catch (error) {
-    console.error('Помилка під час завантаження категорій:', error);
+    iziToast.show({
+        message: `Помилка при завантажені категорій: ${error}`,
+        color: 'red',
+        position: 'topRight',
+    });
     return [];
   }
 }
@@ -20,7 +26,11 @@ export async function getFurniture(page = 1, id = null) {
     const { data } = await axios.get('/furnitures', { params });
     return data;
   } catch (error) {
-    console.error('Помилка при завантаженні товарів:', error);
+    iziToast.show({
+        message: `Помилка при завантажені товарів: ${error}`,
+        color: 'red',
+        position: 'topRight',
+    });
     return { results: [], totalPages: 0 };
   }
 }
