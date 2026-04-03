@@ -27,6 +27,8 @@ h2 {
 .furniture-list {
   display: flex;
   flex-direction: column;
+  padding-top: 48px;
+  padding-bottom: 48px;
   gap: 40px;
 }
 
@@ -166,6 +168,11 @@ button:hover {
 @media screen and (min-width: 1440px) {
   h2 {
     font-size: 48px;
+  }
+
+  .furniture-list {
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 
   button {
