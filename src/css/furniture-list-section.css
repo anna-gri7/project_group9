@@ -24,10 +24,7 @@ h2 {
   line-height: 160%;
 }
 
-.container {
-  min-width: 320px;
-  max-width: 375px;
-  padding: 80px 20px;
+.furniture-list {
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -146,11 +143,6 @@ button:hover {
 }
 
 @media screen and (min-width: 768px) {
-  .container {
-    max-width: 704px;
-    padding: 80px 0;
-  }
-
   .items {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -179,10 +171,6 @@ button:hover {
   button {
      padding: 10px 161px;
      width: auto;
-  }
-
-  .container {
-    max-width: 1312px;
   }
 
   .items {
