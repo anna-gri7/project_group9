@@ -1,69 +1,70 @@
-import * as api from "./api.js";
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
+import * as api from './api.js';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+import { showLoader, hideLoader } from './loader.js';
 
-const categories = document.querySelector(".categories");
-const items = document.querySelector(".items");
-const loadBtn = document.querySelector(".load-more-btn");
+
+const categories = document.querySelector('.categories');
+const items = document.querySelector('.items');
+const loadBtn = document.querySelector('.load-more-btn');
 
 const ITEMS_PER_PAGE = 8;
 let page = 1;
 let id = null;
 
 const categoryImages = {
-  "66504a50a1b2c3d4e5f6a7c0": {
-    normal: "./src/img/categories-img/hallway-furniture.jpg",
-    retina: "./src/img/categories-img/hallway-furniture-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7c0': {
+    normal: './img/categories-img/hallway-furniture.jpg',
+    retina: './img/categories-img/hallway-furniture-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7bd": {
-    normal: "../img/categories-img/kitchens.jpg",
-    retina: "../img/categories-img/kitchens-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7bd': {
+    normal: '../img/categories-img/kitchens.jpg',
+    retina: '../img/categories-img/kitchens-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7c2": {
-    normal: "../img/categories-img/garden-furniture.jpg",
-    retina: "../img/categories-img/garden-furniture-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7c2': {
+    normal: '../img/categories-img/garden-furniture.jpg',
+    retina: '../img/categories-img/garden-furniture-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7bb": {
-    normal: "../img/categories-img/tables.jpg",
-    retina: "../img/categories-img/tables-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7bb': {
+    normal: '../img/categories-img/tables.jpg',
+    retina: '../img/categories-img/tables-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7b8": {
-    normal: "../img/categories-img/sofa.jpg",
-    retina: "../img/categories-img/sofa-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7b8': {
+    normal: '../img/categories-img/sofa.jpg',
+    retina: '../img/categories-img/sofa-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7be": {
-    normal: "../img/categories-img/childrens-furniture.jpg",
-    retina: "../img/categories-img/childrens-furniture-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7be': {
+    normal: '../img/categories-img/childrens-furniture.jpg',
+    retina: '../img/categories-img/childrens-furniture-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7c3": {
-    normal: "../img/categories-img/decor.jpg",
-    retina: "../img/categories-img/decor-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7c3': {
+    normal: '../img/categories-img/decor.jpg',
+    retina: '../img/categories-img/decor-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7c1": {
-    normal: "../img/categories-img/bathroom.jpg",
-    retina: "../img/categories-img/bathroom-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7c1': {
+    normal: '../img/categories-img/bathroom.jpg',
+    retina: '../img/categories-img/bathroom-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7bf": {
-    normal: "../img/categories-img/office.jpg",
-    retina: "../img/categories-img/office-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7bf': {
+    normal: '../img/categories-img/office.jpg',
+    retina: '../img/categories-img/office-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7b9": {
-    normal: "../img/categories-img/wardrobe.jpg",
-    retina: "../img/categories-img/wardrobe-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7b9': {
+    normal: '../img/categories-img/wardrobe.jpg',
+    retina: '../img/categories-img/wardrobe-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7ba": {
-    normal: "../img/categories-img/bed.jpg",
-    retina: "../img/categories-img/bed-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7ba': {
+    normal: '../img/categories-img/bed.jpg',
+    retina: '../img/categories-img/bed-2x.jpg',
   },
-  "66504a50a1b2c3d4e5f6a7bc": {
-    normal: "../img/categories-img/chairs.jpg",
-    retina: "../img/categories-img/chairs-2x.jpg",
+  '66504a50a1b2c3d4e5f6a7bc': {
+    normal: '../img/categories-img/chairs.jpg',
+    retina: '../img/categories-img/chairs-2x.jpg',
   },
 };
 
 function categoryTemplate(item) {
   const img = categoryImages[item._id];
-
   return `
     <li 
       data-id="${item._id}"
@@ -75,7 +76,7 @@ function categoryTemplate(item) {
                 url('${img.normal}') 1x,
                 url('${img.retina}') 2x
               )`
-            : "none"
+            : 'none'
         };
         background-size: cover;
         background-position: center;
@@ -90,7 +91,7 @@ function categoriesTemplate(itemsData) {
   let markup = `
     <li 
       data-id="all-categories"
-      class="category-item"
+      class="category-item active-category"
       style="
         background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
           image-set(
@@ -105,17 +106,17 @@ function categoriesTemplate(itemsData) {
     </li>
   `;
 
-  markup += itemsData.map(categoryTemplate).join("");
+  markup += itemsData.map(categoryTemplate).join('');
   return markup;
 }
 
 function furnitureTemplate(item) {
   const colors = item.color
     .map(
-      (color) =>
+      color =>
         `<li class="furnitures-color" style="background-color:${color}"></li>`
     )
-    .join("");
+    .join('');
 
   return `
     <li class="item-card" data-id="${item._id}">
@@ -123,7 +124,7 @@ function furnitureTemplate(item) {
       <div class="furnitures-description">
         <p class="furnitures-name">${item.name}</p>
         <ul class="furnitures-colors">${colors}</ul>
-        <p class="furnitures-price">${item.price.toLocaleString("uk-UA")} грн</p>
+        <p class="furnitures-price">${item.price.toLocaleString('uk-UA')} грн</p>
       </div>
       <button class="more-info-btn">Детальніше</button>
     </li>
@@ -131,35 +132,28 @@ function furnitureTemplate(item) {
 }
 
 function furnituresTemplate(data) {
-  return data.map(furnitureTemplate).join("");
+  return data.map(furnitureTemplate).join('');
 }
 
 function showLoadMoreButton() {
-  loadBtn.classList.remove("hidden");
+  loadBtn.classList.remove('hidden');
 }
 
 function hideLoadMoreButton() {
-  loadBtn.classList.add("hidden");
+  loadBtn.classList.add('hidden');
 }
 
 async function loadFurniture(reset = false) {
   try {
+    showLoader();
     if (reset) {
       page = 1;
-      items.innerHTML = "";
+      items.innerHTML = '';
     }
-
     loadBtn.disabled = true;
-
     const data = await api.getFurniture(page, id);
-
-    items.insertAdjacentHTML(
-      "beforeend",
-      furnituresTemplate(data.furnitures)
-    );
-
+    items.insertAdjacentHTML('beforeend', furnituresTemplate(data.furnitures));
     page++;
-
     if (page * ITEMS_PER_PAGE > data.totalItems) {
       hideLoadMoreButton();
     } else {
@@ -168,46 +162,60 @@ async function loadFurniture(reset = false) {
   } catch (error) {
     iziToast.show({
       message: `Error: ${error}`,
-      color: "red",
-      position: "topRight",
+      color: 'red',
+      position: 'topRight',
     });
   } finally {
     loadBtn.disabled = false;
+    hideLoader();
   }
 }
+categories.addEventListener('click', async e => {
+  const target = e.target.closest('.category-item');
+  if (!target) return;
+  document.querySelectorAll('.category-item').forEach(item => {
+    item.classList.remove('active-category');
+  });
+  target.classList.add('active-category');
+  id = target.dataset.id === 'all-categories' ? null : target.dataset.id;
+});
 
-// ✅ ГОЛОВНИЙ СТАРТ
 async function init() {
   try {
     const categoriesData = await api.getCategories();
-
     categories.insertAdjacentHTML(
-      "beforeend",
+      'beforeend',
       categoriesTemplate(categoriesData)
     );
-
     await loadFurniture(true);
   } catch (error) {
     iziToast.show({
       message: `Error: ${error}`,
-      color: "red",
-      position: "topRight",
+      color: 'red',
+      position: 'topRight',
     });
+  }
+  const allCategoriesItem = document.querySelector(
+    '[data-id="all-categories"]'
+  );
+  if (allCategoriesItem) {
+    allCategoriesItem.classList.add('active-category');
   }
 }
 
 init();
 
-// 🔹 події
-categories.addEventListener("click", async (e) => {
-  const target = e.target.closest(".category-item");
+categories.addEventListener('click', async e => {
+  const target = e.target.closest('.category-item');
   if (!target) return;
-
-  id = target.dataset.id === "all-categories" ? null : target.dataset.id;
-
+  showLoader();
+  id = target.dataset.id === 'all-categories' ? null : target.dataset.id;
   await loadFurniture(true);
+  hideLoader();
 });
 
-loadBtn.addEventListener("click", async () => {
+loadBtn.addEventListener('click', async () => {
+  showLoader();
   await loadFurniture();
+  hideLoader();
 });
