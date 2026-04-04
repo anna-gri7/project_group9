@@ -12,16 +12,16 @@ body {
 }
 
 /* ========================
-  MOBILE-FIRST (375px+)
-   ======================== */
+  MOBILE-FIRST (375px+) */
+
+  
 .about-section {
-  padding: 60px 20px;
   background-color: #f8f5f0;
 }
 
 .container {
   width: 100%;
-  max-width: 1440px;
+  height: 100%;
   margin: 0 auto;
 }
 
@@ -54,43 +54,36 @@ body {
   color: #080c09;
 }
 
-.image {
-  width: 100%;
-  max-width: 520px;
-}
 
 .image img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 335px;
+  object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(31, 33, 40, 0.12);
-  object-fit: cover;
 }
 
-/* ========================
-  TABLET — 768px
-   ======================== */
+/* TABLET */
 @media screen and (min-width: 768px) {
-  .about-section {
-    padding: 80px 40px;
-  }
 
   .content-left {
-    max-width: none;
-    text-align: left;
+    max-width: 100%;
   }
 
   .image {
-    max-width: 768px;
+    width: 100%;
+  }
+
+  .image img {
+    width: 100%;
+    height: auto;
   }
 }
 
-/* ========================
-  DESKTOP — 1440px
-   ======================== */
+/* DESKTOP — 1440px */
 @media screen and (min-width: 1440px) {
-  .about-section {
+
+    .about-section {
     padding: 183px 20px;
   }
 
@@ -98,16 +91,15 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
-    align-items: flex-start;     /* залишаємо вирівнювання зверху */
+    align-items: flex-start;    
   }
 
-  /* ←←← ОСНОВНЕ ЗМІНЕННЯ: опускаємо текст */
+
   .content-left {
-    margin-top: 119px;            /* почни з цього значення */
+    margin-top: 119px;           
   }
 
   .heading {
     font-size: 48px;
-  }
-  
+  } 
 }
