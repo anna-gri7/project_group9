@@ -12,8 +12,8 @@ let id = null;
 
 const categoryImages = {
   "66504a50a1b2c3d4e5f6a7c0": {
-    normal: "/project_group9/img/categories-img/hallway-furniture.jpg",
-    retina: "/project_group9/img/categories-img/hallway-furniture-2x.jpg",
+    normal: "./src/img/categories-img/hallway-furniture.jpg",
+    retina: "./src/img/categories-img/hallway-furniture-2x.jpg",
   },
   "66504a50a1b2c3d4e5f6a7bd": {
     normal: "../img/categories-img/kitchens.jpg",
