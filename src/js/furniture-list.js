@@ -14,52 +14,52 @@ let id = null;
 
 const categoryImages = {
   '66504a50a1b2c3d4e5f6a7c0': {
-    normal: './img/categories-img/hallway-furniture.jpg',
-    retina: './img/categories-img/hallway-furniture-2x.jpg',
+    normal: 'img/categories-img/hallway-furniture.jpg',
+    retina: 'img/categories-img/hallway-furniture-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7bd': {
-    normal: '../img/categories-img/kitchens.jpg',
-    retina: '../img/categories-img/kitchens-2x.jpg',
+    normal: 'img/categories-img/kitchens.jpg',
+    retina: 'img/categories-img/kitchens-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7c2': {
-    normal: '../img/categories-img/garden-furniture.jpg',
-    retina: '../img/categories-img/garden-furniture-2x.jpg',
+    normal: 'img/categories-img/garden-furniture.jpg',
+    retina: 'img/categories-img/garden-furniture-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7bb': {
-    normal: '../img/categories-img/tables.jpg',
-    retina: '../img/categories-img/tables-2x.jpg',
+    normal: 'img/categories-img/tables.jpg',
+    retina: 'img/categories-img/tables-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7b8': {
-    normal: '../img/categories-img/sofa.jpg',
-    retina: '../img/categories-img/sofa-2x.jpg',
+    normal: 'img/categories-img/sofa.jpg',
+    retina: 'img/categories-img/sofa-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7be': {
-    normal: '../img/categories-img/childrens-furniture.jpg',
-    retina: '../img/categories-img/childrens-furniture-2x.jpg',
+    normal: 'img/categories-img/childrens-furniture.jpg',
+    retina: 'img/categories-img/childrens-furniture-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7c3': {
-    normal: '../img/categories-img/decor.jpg',
-    retina: '../img/categories-img/decor-2x.jpg',
+    normal: 'img/categories-img/decor.jpg',
+    retina: 'img/categories-img/decor-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7c1': {
-    normal: '../img/categories-img/bathroom.jpg',
-    retina: '../img/categories-img/bathroom-2x.jpg',
+    normal: 'img/categories-img/bathroom.jpg',
+    retina: 'img/categories-img/bathroom-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7bf': {
-    normal: '../img/categories-img/office.jpg',
-    retina: '../img/categories-img/office-2x.jpg',
+    normal: 'img/categories-img/office.jpg',
+    retina: 'img/categories-img/office-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7b9': {
-    normal: '../img/categories-img/wardrobe.jpg',
-    retina: '../img/categories-img/wardrobe-2x.jpg',
+    normal: 'img/categories-img/wardrobe.jpg',
+    retina: 'img/categories-img/wardrobe-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7ba': {
-    normal: '../img/categories-img/bed.jpg',
-    retina: '../img/categories-img/bed-2x.jpg',
+    normal: 'img/categories-img/bed.jpg',
+    retina: 'img/categories-img/bed-2x.jpg',
   },
   '66504a50a1b2c3d4e5f6a7bc': {
-    normal: '../img/categories-img/chairs.jpg',
-    retina: '../img/categories-img/chairs-2x.jpg',
+    normal: 'img/categories-img/chairs.jpg',
+    retina: 'img/categories-img/chairs-2x.jpg',
   },
 };
 
