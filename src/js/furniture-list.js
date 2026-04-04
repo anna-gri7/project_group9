@@ -1,6 +1,8 @@
 import * as api from './api.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import { showLoader, hideLoader } from './loader.js';
+
 
 const categories = document.querySelector('.categories');
 const items = document.querySelector('.items');
@@ -63,7 +65,6 @@ const categoryImages = {
 
 function categoryTemplate(item) {
   const img = categoryImages[item._id];
-
   return `
     <li 
       data-id="${item._id}"
@@ -144,6 +145,7 @@ function hideLoadMoreButton() {
 
 async function loadFurniture(reset = false) {
   try {
+    showLoader();
     if (reset) {
       page = 1;
       items.innerHTML = '';
@@ -165,6 +167,7 @@ async function loadFurniture(reset = false) {
     });
   } finally {
     loadBtn.disabled = false;
+    hideLoader();
   }
 }
 categories.addEventListener('click', async e => {
@@ -205,10 +208,14 @@ init();
 categories.addEventListener('click', async e => {
   const target = e.target.closest('.category-item');
   if (!target) return;
+  showLoader();
   id = target.dataset.id === 'all-categories' ? null : target.dataset.id;
   await loadFurniture(true);
+  hideLoader();
 });
 
 loadBtn.addEventListener('click', async () => {
+  showLoader();
   await loadFurniture();
+  hideLoader();
 });
