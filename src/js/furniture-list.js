@@ -95,8 +95,8 @@ function categoriesTemplate(itemsData) {
       style="
         background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
           image-set(
-            url('../img/categories-img/all-items.jpg') 1x,
-            url('../img/categories-img/all-items-2x.jpg') 2x
+            url('img/categories-img/all-items.jpg') 1x,
+            url('img/categories-img/all-items-2x.jpg') 2x
           );
         background-size: cover;
         background-position: center;
