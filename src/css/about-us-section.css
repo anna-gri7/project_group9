@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* ========================
+  MOBILE-FIRST (375px+)
+   ======================== */
+.about-section {
+  padding: 60px 20px;
+  background-color: #f8f5f0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.component {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+.content-left {
+  width: 100%;
+  max-width: 520px;
+  text-align: left;
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.2;
+  color: #080c09;
+  margin-bottom: 24px;
+}
+
+
+.text {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #080c09;
+}
+
+.image {
+  width: 100%;
+  max-width: 520px;
+}
+
+.image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(31, 33, 40, 0.12);
+  object-fit: cover;
+}
+
+/* ========================
+  TABLET — 768px
+   ======================== */
+@media screen and (min-width: 768px) {
+  .about-section {
+    padding: 80px 40px;
+  }
+
+  .content-left {
+    max-width: none;
+    text-align: left;
+  }
+
+  .image {
+    max-width: 768px;
+  }
+}
+
+/* ========================
+  DESKTOP — 1440px
+   ======================== */
+@media screen and (min-width: 1440px) {
+  .about-section {
+    padding: 183px 20px;
+  }
+
+  .component {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: flex-start;     /* залишаємо вирівнювання зверху */
+  }
+
+  /* ←←← ОСНОВНЕ ЗМІНЕННЯ: опускаємо текст */
+  .content-left {
+    margin-top: 119px;            /* почни з цього значення */
+  }
+
+  .heading {
+    font-size: 48px;
+  }
+  
+}
