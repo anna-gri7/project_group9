@@ -8,7 +8,7 @@
     <script type="module" crossorigin src="/project_group9/index.js"></script>
     <link rel="modulepreload" crossorigin href="/project_group9/assets/vendor-BaliQn07.js">
     <link rel="stylesheet" crossorigin href="/project_group9/assets/vendor-C2ykVD3l.css">
-    <link rel="stylesheet" crossorigin href="/project_group9/assets/index-DU-vIfR8.css">
+    <link rel="stylesheet" crossorigin href="/project_group9/assets/index-6JZYHXNT.css">
   </head>
   <body>
     <header class="page-header">
@@ -92,9 +92,8 @@
 </div>
 
       <section class="section about-section" id="about-us-id">
-  <div class="container">
-    <div class="component">
-      
+  <div class="container about-container">
+    <div class="component"> 
       <!-- Ліва частина — текст -->
       <div class="content-left">
         <div class="content">
@@ -109,12 +108,21 @@
 
       <!-- Права частина — зображення -->
       <div class="image">
-        <img 
-          src="../img/about/about-us.jpg" 
-          alt="Про Меблерію"
-          srcset="../img/about/about-us.jpg 1x, ../img/about/about-us@2x.jpg 2x">
-      </div>
+        <picture>
+          <source 
+      media="(min-width: 1440px)" 
+      srcset="../img/about/about-us-desktop.jpg 1x, ../img/about/about-us-desktop@2x.jpg 2x">
+              
+              <source 
+      media="(min-width: 768px)" 
+      srcset="../img/about/about-us-tablet.jpg 1x, ../img/about/about-us-tablet@2x.jpg 2x">
 
+          <img 
+      src="../img/about/about-us-mobile.jpg" 
+      alt="Про Меблерію"
+      srcset="../img/about/about-us-mobile.jpg 1x, ../img/about/about-us-mobile@2x.jpg 2x">
+        </picture>
+      </div>
     </div>
   </div>
 </section>
