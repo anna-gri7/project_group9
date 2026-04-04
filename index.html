@@ -8,7 +8,7 @@
     <script type="module" crossorigin src="/project_group9/index.js"></script>
     <link rel="modulepreload" crossorigin href="/project_group9/assets/vendor-D8wu4Sqk.js">
     <link rel="stylesheet" crossorigin href="/project_group9/assets/vendor-DDwhxaz1.css">
-    <link rel="stylesheet" crossorigin href="/project_group9/assets/index-BbUc1Rm8.css">
+    <link rel="stylesheet" crossorigin href="/project_group9/assets/index-Dq-lGzCD.css">
   </head>
   <body>
     <header class="page-header">
@@ -161,7 +161,54 @@
 
 
     
-    
+    <button data-order-modal-open>Test modal</button>
+<div class="order-backdrop is-hidden" data-order-modal>
+  <div class="order-modal">
+    <button type="button" class="order-close-btn" data-order-modal-close>
+      &times;
+    </button>
+
+    <h2 class="order-title">Замовити зворотний зв'язок</h2>
+
+    <form class="order-form">
+      <div class="order-form-field">
+        <label class="order-form-label" for="user-name">Ім'я*</label>
+        <input
+          class="order-form-input"
+          type="text"
+          name="userName"
+          id="user-name"
+          placeholder="Дмитро"
+          required
+        />
+      </div>
+
+      <div class="order-form-field">
+        <label class="order-form-label" for="user-phone">Телефон*</label>
+        <input
+          class="order-form-input"
+          type="tel"
+          name="userPhone"
+          id="user-phone"
+          placeholder="38 099 123 22 11"
+          required
+        />
+      </div>
+
+      <div class="order-form-field">
+        <label class="order-form-label" for="user-comment">Коментар</label>
+        <textarea
+          class="order-form-textarea"
+          name="userComment"
+          id="user-comment"
+          placeholder="Введіть ваш коментар"
+        ></textarea>
+      </div>
+      <button class="order-submit-btn" type="submit">Надіслати заявку</button>
+    </form>
+  </div>
+</div>
+
 
     
 
