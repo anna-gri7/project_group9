@@ -1,11 +1,11 @@
-// рендер карток 
 import * as api from "./api.js";
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 const categories = document.querySelector(".categories");
 const items = document.querySelector(".items");
 const loadBtn = document.querySelector(".load-more-btn");
+
 const ITEMS_PER_PAGE = 8;
 let page = 1;
 let id = null;
@@ -63,18 +63,22 @@ const categoryImages = {
 
 function categoryTemplate(item) {
   const img = categoryImages[item._id];
+
   return `
     <li 
-      data-id = ${item._id}
+      data-id="${item._id}"
       class="category-item"
       style="
-        background-image: image-set(
-          url('${img.normal}') 1x,
-          url('${img.retina}') 2x
-        );
+        background-image: ${
+          img
+            ? `image-set(
+                url('${img.normal}') 1x,
+                url('${img.retina}') 2x
+              )`
+            : "none"
+        };
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
       "
     >
       ${item.name}
@@ -82,9 +86,10 @@ function categoryTemplate(item) {
   `;
 }
 
-function categoriesTemplate(items) {
-  let markup = `<li 
-      data-id = "all-categories"
+function categoriesTemplate(itemsData) {
+  let markup = `
+    <li 
+      data-id="all-categories"
       class="category-item"
       style="
         background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
@@ -94,12 +99,13 @@ function categoriesTemplate(items) {
           );
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
       "
     >
       Всі товари
-    </li>`;
-  markup += items.map(categoryTemplate).join("");
+    </li>
+  `;
+
+  markup += itemsData.map(categoryTemplate).join("");
   return markup;
 }
 
@@ -107,25 +113,25 @@ function furnitureTemplate(item) {
   const colors = item.color
     .map(
       (color) =>
-        `<li class="furnitures-color" data-color="${color}" style="background-color: ${color};"></li>`,
+        `<li class="furnitures-color" style="background-color:${color}"></li>`
     )
     .join("");
 
-  return `<li class="item-card" data-id="${item._id}">
-            <img src="${item.images[0]}" alt="${item.name}">
-            <div class=furnitures-description>
-                <p class=furnitures-name>${item.name}</p>
-                <ul class=furnitures-colors>
-                    ${colors}
-                </ul>
-                <p class=furnitures-price>${item.price.toLocaleString("uk-UA")} грн</p>
-            </div>
-            <button type="button" class="more-info-btn">Детальніше</button>
-        </li>`;
+  return `
+    <li class="item-card" data-id="${item._id}">
+      <img src="${item.images[0]}" alt="${item.name}">
+      <div class="furnitures-description">
+        <p class="furnitures-name">${item.name}</p>
+        <ul class="furnitures-colors">${colors}</ul>
+        <p class="furnitures-price">${item.price.toLocaleString("uk-UA")} грн</p>
+      </div>
+      <button class="more-info-btn">Детальніше</button>
+    </li>
+  `;
 }
 
-function furnituresTemplate(items) {
-  return items.map(furnitureTemplate).join("");
+function furnituresTemplate(data) {
+  return data.map(furnitureTemplate).join("");
 }
 
 function showLoadMoreButton() {
@@ -137,18 +143,23 @@ function hideLoadMoreButton() {
 }
 
 async function loadFurniture(reset = false) {
-  if (reset) {
-    page = 1;
-    items.innerHTML = "";
-  }
   try {
+    if (reset) {
+      page = 1;
+      items.innerHTML = "";
+    }
+
     loadBtn.disabled = true;
+
     const data = await api.getFurniture(page, id);
+
     items.insertAdjacentHTML(
       "beforeend",
       furnituresTemplate(data.furnitures)
     );
+
     page++;
+
     if (page * ITEMS_PER_PAGE > data.totalItems) {
       hideLoadMoreButton();
     } else {
@@ -156,29 +167,44 @@ async function loadFurniture(reset = false) {
     }
   } catch (error) {
     iziToast.show({
-        message: `Error: ${error}`,
-        color: 'red',
-        position: 'topRight',
+      message: `Error: ${error}`,
+      color: "red",
+      position: "topRight",
     });
   } finally {
     loadBtn.disabled = false;
   }
 }
 
-const categoriesData = await api.getCategories();
+// ✅ ГОЛОВНИЙ СТАРТ
+async function init() {
+  try {
+    const categoriesData = await api.getCategories();
 
-categories.insertAdjacentHTML(
-  "beforeend",
-  categoriesTemplate(categoriesData)
-);
+    categories.insertAdjacentHTML(
+      "beforeend",
+      categoriesTemplate(categoriesData)
+    );
 
-await loadFurniture(true);
+    await loadFurniture(true);
+  } catch (error) {
+    iziToast.show({
+      message: `Error: ${error}`,
+      color: "red",
+      position: "topRight",
+    });
+  }
+}
 
+init();
+
+// 🔹 події
 categories.addEventListener("click", async (e) => {
   const target = e.target.closest(".category-item");
   if (!target) return;
-  const categoryId = target.dataset.id;
-  id = categoryId === "all-categories" ? null : categoryId;
+
+  id = target.dataset.id === "all-categories" ? null : target.dataset.id;
+
   await loadFurniture(true);
 });
 
