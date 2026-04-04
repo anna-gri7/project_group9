@@ -126,6 +126,15 @@ h2 {
   padding: 10px 0;
   background-color: rgba(8, 12, 9, 0.05);
   color: #080C09;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 500;
+  line-height: 160%;
+  align-self: center;
+  border: none;
+  border-radius: 100px;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05),
+              0 0 0 1px rgba(8, 12, 9, 0.05);
 }
 
 .load-more-btn {
@@ -148,8 +157,10 @@ h2 {
               0 0 0 1px rgba(8, 12, 9, 0.05);
 }
 
-button:hover,
-button:focus {
+.red-button:hover,
+.red-button:focus,
+.more-info-btn:focus,
+.more-info-btn:hover {
   opacity: 0.5;
 }
 
