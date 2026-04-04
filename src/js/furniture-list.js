@@ -3,7 +3,7 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import { showLoader, hideLoader } from './loader.js';
 
-
+const BASE_URL = import.meta.env.BASE_URL;
 const categories = document.querySelector('.categories');
 const items = document.querySelector('.items');
 const loadBtn = document.querySelector('.load-more-btn');
@@ -14,52 +14,52 @@ let id = null;
 
 const categoryImages = {
   '66504a50a1b2c3d4e5f6a7c0': {
-    normal: '/img/categories-img/hallway-furniture.jpg',
-    retina: '/img/categories-img/hallway-furniture-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/hallway-furniture.jpg`,
+    retina: `${BASE_URL}img/categories-img/hallway-furniture-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7bd': {
-    normal: '/img/categories-img/kitchens.jpg',
-    retina: '/img/categories-img/kitchens-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/kitchens.jpg`,
+    retina: `${BASE_URL}img/categories-img/kitchens-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7c2': {
-    normal: '/img/categories-img/garden-furniture.jpg',
-    retina: '/img/categories-img/garden-furniture-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/garden-furniture.jpg`,
+    retina: `${BASE_URL}img/categories-img/garden-furniture-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7bb': {
-    normal: '/img/categories-img/tables.jpg',
-    retina: '/img/categories-img/tables-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/tables.jpg`,
+    retina: `${BASE_URL}img/categories-img/tables-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7b8': {
-    normal: '/img/categories-img/sofa.jpg',
-    retina: '/img/categories-img/sofa-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/sofa.jpg`,
+    retina: `${BASE_URL}img/categories-img/sofa-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7be': {
-    normal: '/img/categories-img/childrens-furniture.jpg',
-    retina: '/img/categories-img/childrens-furniture-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/childrens-furniture.jpg`,
+    retina: `${BASE_URL}img/categories-img/childrens-furniture-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7c3': {
-    normal: '/img/categories-img/decor.jpg',
-    retina: '/img/categories-img/decor-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/decor.jpg`,
+    retina: `${BASE_URL}img/categories-img/decor-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7c1': {
-    normal: '/img/categories-img/bathroom.jpg',
-    retina: '/img/categories-img/bathroom-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/bathroom.jpg`,
+    retina: `${BASE_URL}img/categories-img/bathroom-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7bf': {
-    normal: '/img/categories-img/office.jpg',
-    retina: '/img/categories-img/office-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/office.jpg`,
+    retina: `${BASE_URL}img/categories-img/office-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7b9': {
-    normal: '/img/categories-img/wardrobe.jpg',
-    retina: '/img/categories-img/wardrobe-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/wardrobe.jpg`,
+    retina: `${BASE_URL}img/categories-img/wardrobe-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7ba': {
-    normal: '/img/categories-img/bed.jpg',
-    retina: '/img/categories-img/bed-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/bed.jpg`,
+    retina: `${BASE_URL}img/categories-img/bed-2x.jpg`,
   },
   '66504a50a1b2c3d4e5f6a7bc': {
-    normal: '/img/categories-img/chairs.jpg',
-    retina: '/img/categories-img/chairs-2x.jpg',
+    normal: `${BASE_URL}img/categories-img/chairs.jpg`,
+    retina: `${BASE_URL}img/categories-img/chairs-2x.jpg`,
   },
 };
 
@@ -95,8 +95,8 @@ function categoriesTemplate(itemsData) {
       style="
         background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
           image-set(
-            url('/img/categories-img/all-items.jpg') 1x,
-            url('/img/categories-img/all-items-2x.jpg') 2x
+            url('${BASE_URL}img/categories-img/all-items.jpg') 1x,
+            url('${BASE_URL}img/categories-img/all-items-2x.jpg') 2x
           );
         background-size: cover;
         background-position: center;
