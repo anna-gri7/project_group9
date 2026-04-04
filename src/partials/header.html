@@ -1,5 +1,57 @@
-<header class="header">
-  <div class="container">
-    <!--  -->
+<header class="page-header">
+  <div class="container header-container">
+    <nav class="header-nav">
+      <a href="./src/index.html" class="logo-link">
+        <img src="/img/logo.svg" alt="logo">
+      </a>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a class="nav-link" href="#furniture-list-section">Наші меблі</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about-us-section">Про нас</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#faq-section">Часті питання</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#feedback-section">Відгуки</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-btn" href="#furniture-list-section">До покупок</a>
+        </li>
+      </ul>
+    </nav>
+    <button class="burger-btn" data-menu-open>
+      <svg class="burger-icon" width="24" height="24">
+        <use href="/img/header/icons-header.svg#icon-burger"></use>
+      </svg>
+    </button>
+  </div>
+  <div class="mobile-menu" data-menu>
+    <div class="mobile-menu-container">
+
+  <div class="mobile-menu-header">
+    <a href="index.html" class="logo-link">
+      <img src="./img/logo.svg" alt="Меблерія logo" width="84" height="36">
+    </a>
+
+    <button class="mobile-menu-close" data-menu-close>
+      <svg width="24" height="24">
+        <use href="/img/header/icons-header.svg#icon-close"></use>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="mobile-nav">
+        <ul class="mobile-nav-list">
+          <li><a href="#furniture-list-section">Наші меблі</a></li>
+          <li><a href="#about-us-section">Про нас</a></li>
+          <li><a href="#faq-section">Часті питання</a></li>
+          <li><a href="#feedback-section">Відгуки</a></li>
+          <li><a class="mobile-nav-btn" href="#furniture-list-section">До покупок</a></li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </header>
