@@ -1,105 +1,181 @@
 import Swiper from 'swiper';
-import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
 import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
 import axios from 'axios';
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
-import Raty from 'raty-js';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+import rater from 'rater-js';
+import refs from './refs';
 
-const API_URL = 'https://furniture-store.b.goit.study/api/feedbacks';
+axios.defaults.baseURL = 'https://furniture-store-v2.b.goit.study/api';
 
-function getCustomRoundedRating(rate) {
-  const r = parseFloat(rate);
-  if (r >= 3.3 && r <= 3.7) return 3.5;
-  if (r >= 3.8 && r <= 4.2) return 4.0;
-  return r; 
+const starToRun = document.querySelector('.star-to-run');
+const starUrl = starToRun.getAttribute('src');
+const feedbackSection = document.querySelector('.feedback');
+
+function removeSlider() {
+  const swipeBox = document.querySelector('.feedback-swiper');
+  swipeBox.remove();
 }
 
-async function fetchFeedbacks() {
+let currentPage = 1;
+let totalPages = 1;
+let isLoading = false;
+let swiper = null;
+let allFeedbacks = [];
+
+async function getFeedbackData(page = 1) {
   try {
-    const response = await axios.get(API_URL, {
-    params: {
-       page: "1",
-       limit: "10"
-    }});
-    const data = Array.isArray(response.data) ? response.data : response.data.feedbacks;
-        console.log(data)
-    return data;
+    const response = await axios.get(`/feedbacks?limit=3&page=${page}`);
+    return {
+      feedbacks: response.data.feedbacks || [],
+      totalPages: Math.ceil(response.data.total / response.data.limit) || 1,
+      currentPage: parseInt(response.data.page) || 1,
+    };
   } catch (error) {
-    console.log(error)
+    removeSlider();
     iziToast.error({
-                message: 'Failed to load feedbacks',
-                position: 'topRight',
-                titleColor: 'red',
-                });
-    return [];
+      title: 'Помилка',
+      message: 'Не вдалось завантажити дані. Спробуйте пізніше',
+      position: 'topRight',
+    });
+    return null;
   }
 }
 
-function createMarkup(feedbacks) {
-  return feedbacks.map(({ name, descr, rate }) => {
-    const displayRate = getCustomRoundedRating(rate);
-    return `
-      <li class="swiper-slide feedback-item">
-        <div class="feedback-card">
-          <div class="star-rating-container" data-rating="${displayRate}"></div>
-          
-          <p class="feedback-comment">"${descr}"</p>
-          <h3 class="feedback-user-name">${name}</h3>
-        </div>
-      </li>
-    `;
-  }).join('');
+function createFeedbackSlide({ descr, name, rate, _id }) {
+  return `
+    <li class="feedback-item swiper-slide">
+        <div id="rater-${_id}" data-rating="${rate}"></div>
+        <p class="feedback-descr">${descr}</p>
+        <p class="feedback-name">${name}</p>
+    </li>`;
 }
 
-// Ініціалізація бібліотеки Raty
-export function initRatings() {
-  const ratings = document.querySelectorAll('.star-rating-container');
-  
-  ratings.forEach(el => {
-    const score = parseFloat(el.getAttribute('data-rating'));
-    const raty = new Raty(el, {
-      score: score, 
-      readOnly: true,
-      half: true,
-      halfShow: true, 
-      starType: 'i',
-      starOn: 'fas fa-star',
-      starOff: 'far fa-star',
-      starHalf: 'fas fa-star-half-alt',
-      space: false
+async function loadMoreFeedbacks() {
+  if (isLoading || currentPage >= totalPages) return;
+
+  isLoading = true;
+  const nextPage = currentPage + 1;
+  const response = await getFeedbackData(nextPage);
+
+  if (response && response.feedbacks.length > 0) {
+    currentPage = response.currentPage;
+    allFeedbacks = [...allFeedbacks, ...response.feedbacks];
+
+    const newSlides = response.feedbacks
+      .map(feedback => createFeedbackSlide(feedback))
+      .join('');
+
+    refs.feedbackList.insertAdjacentHTML('beforeend', newSlides);
+    addStarToFeedbackList(response.feedbacks);
+
+    feedbackSection.querySelectorAll('.star-value').forEach(el => {
+      el.style.backgroundImage = `url("${starUrl}")`;
     });
-    raty.init();
-  });
+
+    if (swiper) {
+      swiper.update();
+    }
+  }
+
+  isLoading = false;
 }
 
-async function initFeedbackSection() {
-  const container = document.querySelector('.feedback-list');
-  if (!container) return; 
+async function renderFeedback() {
+  const response = await getFeedbackData(1);
 
-  const data = await fetchFeedbacks();
-  if (data.length === 0) return;
-  container.innerHTML = createMarkup(data);
-  initRatings(); 
+  if (!response || response.feedbacks.length < 3) {
+    removeSlider();
+    iziToast.info({
+      title: 'Увага',
+      message: 'Недостатньо відгуків для відображення (мінімум 3)',
+      position: 'topRight',
+    });
+    return;
+  }
 
-  new Swiper('.feedback-swiper', {
+  allFeedbacks = response.feedbacks;
+  currentPage = response.currentPage;
+  totalPages = response.totalPages;
+
+  const slidesMarkup = response.feedbacks
+    .map(feedback => createFeedbackSlide(feedback))
+    .join('');
+
+  refs.feedbackList.insertAdjacentHTML('beforeend', slidesMarkup);
+  addStarToFeedbackList(response.feedbacks);
+
+  feedbackSection.querySelectorAll('.star-value').forEach(el => {
+    el.style.backgroundImage = `url("${starUrl}")`;
+  });
+
+  swipeFeedbackLists();
+}
+
+function addStarToFeedbackList(response) {
+  response.forEach(({ rate, _id }) => {
+    const roundedRate = roundRating(rate);
+    rater({
+      max: 5,
+      readOnly: true,
+      rating: roundedRate,
+      starSize: 20,
+      element: document.querySelector(`#rater-${_id}`),
+    });
+  });
+  
+  function roundRating(rate) {
+    if (rate >= 3.3 && rate <= 3.7) return 3.5;
+    if (rate >= 3.8 && rate <= 4.2) return 4.0;
+    return Math.round(rate);
+  }
+
+}
+
+function swipeFeedbackLists() {
+  swiper = new Swiper('.feedback-swiper', {
     modules: [Navigation, Pagination],
-    slidesPerView: 1,
-    spaceBetween: 20,
     pagination: {
-      el: '.feedback-dots',
+      el: '.swiper-pagination',
       clickable: true,
-      renderBullet: (className) => `<li class="${className}"></li>`,
+      dynamicBullets: true,
     },
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
+    grabCursor: true,
     breakpoints: {
-      768: { slidesPerView: 2, spaceBetween: 32 },
-      1440: { slidesPerView: 3, spaceBetween: 32 }
-    }
+      375: {
+        slidesPerView: 1,
+        spaceBetween: 20,
+      },
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 24,
+      },
+      1440: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+      },
+    },
+    on: {
+      reachEnd: function () {
+        if (currentPage < totalPages) {
+          loadMoreFeedbacks();
+        }
+      },
+      slideChange: function () {
+        const remainingSlides =
+          this.slides.length - this.activeIndex - this.slidesPerViewDynamic();
+        if (remainingSlides <= 2 && currentPage < totalPages) {
+          loadMoreFeedbacks();
+        }
+      },
+    },
   });
 }
 
-initFeedbackSection();
+renderFeedback();
