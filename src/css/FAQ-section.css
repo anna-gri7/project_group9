@@ -59,8 +59,8 @@ button {
   width: 32px;
   height: 32px;
   flex-shrink: 0;
-  stroke: currentColor;
-  fill: currentColor;
+  stroke: #000;
+  fill: #000;
   display: block;
   transition: transform 0.5s ease-in-out;
 }
