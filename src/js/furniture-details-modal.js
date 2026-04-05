@@ -23,7 +23,7 @@ const refs = {
 
 let currentSelectedColor = null;
 
-// Generate star rating HTML
+
 function generateRatingStars(rating) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
@@ -42,7 +42,6 @@ function generateRatingStars(rating) {
   return starsHTML;
 }
 
-// Format dimensions
 function formatDimensions(dimensions) {
   if (!dimensions) return '';
   const { width, height, depth } = dimensions;
@@ -52,7 +51,7 @@ function formatDimensions(dimensions) {
   return '';
 }
 
-// Render furniture details in modal
+
 async function renderFurnitureDetails(furnitureId) {
   try {
     showLoader();
@@ -69,13 +68,13 @@ async function renderFurnitureDetails(furnitureId) {
 
     console.log('Processing furniture data:', furniture);
 
-    // Set main image
+
     if (furniture.images && furniture.images.length > 0) {
       refs.mainImage.src = furniture.images[0];
       refs.mainImage.alt = furniture.name;
     }
 
-    // Render thumbnail gallery
+
     refs.thumbnailsList.innerHTML = '';
     if (furniture.images && furniture.images.length > 0) {
       furniture.images.forEach((image, index) => {
@@ -95,15 +94,14 @@ async function renderFurnitureDetails(furnitureId) {
       });
     }
 
-    // Set furniture info
     refs.furnitureName.textContent = furniture.name || '';
     refs.furnitureCategory.textContent = furniture.category?.name || '';
     refs.furniturePrice.textContent = furniture.price ? `${furniture.price.toLocaleString('uk-UA')} грн` : '';
 
-    // Set rating
+
     refs.furnitureRating.innerHTML = generateRatingStars(furniture.rating || 0);
 
-    // Render color options
+
     refs.colorsList.innerHTML = '';
     if (furniture.color && furniture.color.length > 0) {
       currentSelectedColor = furniture.color[0];
@@ -137,7 +135,7 @@ async function renderFurnitureDetails(furnitureId) {
       });
     }
 
-    // Set description
+
     refs.furnitureDescription.textContent = furniture.description || '';
 
     // Set dimensions - using sample data for now
@@ -148,7 +146,7 @@ async function renderFurnitureDetails(furnitureId) {
       refs.furnitureSize.textContent = formattedDimensions;
     }
 
-    // Show modal
+
     toggleModal();
   } catch (error) {
     console.error('Error rendering furniture:', error);
@@ -162,7 +160,7 @@ async function renderFurnitureDetails(furnitureId) {
   }
 }
 
-// Toggle modal visibility
+
 function toggleModal() {
   if (refs.backdropBtn) {
     refs.backdropBtn.classList.toggle('is-hidden');
@@ -170,13 +168,12 @@ function toggleModal() {
   }
 }
 
-// Close modal
 function closeModal() {
   if (!refs.backdropBtn.classList.contains('is-hidden')) {
     toggleModal();
   }
 }
-// Function to open order modal
+
 function openOrderModal() {
   const orderBackdrop = document.querySelector('[data-order-modal]');
   if (orderBackdrop && orderBackdrop.classList.contains('is-hidden')) {
@@ -187,7 +184,7 @@ function openOrderModal() {
     }
   }
 }
-// Event listeners for modal controls
+
 if (refs.closeBtn) {
   refs.closeBtn.addEventListener('click', closeModal);
 }
@@ -210,17 +207,18 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Open order modal when clicking "Go to order"
+
 if (refs.orderBtn) {
   refs.orderBtn.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
     closeModal();
-    openOrderModal();
+    setTimeout(() => {
+      openOrderModal();
+    }, 100);
   });
 }
 
-// Event delegation for "More info" buttons
 if (refs.itemsList) {
   refs.itemsList.addEventListener('click', async (e) => {
     const moreInfoBtn = e.target.closest('.more-info-btn');
