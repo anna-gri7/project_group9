@@ -34,3 +34,18 @@ export async function getFurniture(page = 1, id = null) {
     return { results: [], totalPages: 0 };
   }
 }
+
+export async function getFurnitureById(id) {
+  try {
+    const { data } = await axios.get(`/furnitures/${id}`);
+    return data;
+  } catch (error) {
+    console.error('API Error:', error.response?.status, error.message);
+    iziToast.show({
+        message: `Помилка при завантажені деталей товару: ${error}`,
+        color: 'red',
+        position: 'topRight',
+    });
+    return null;
+  }
+}
