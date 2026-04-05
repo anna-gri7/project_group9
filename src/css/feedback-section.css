@@ -1,7 +1,3 @@
-/* --- Секція та базовий контейнер --- */
-@import "swiper/css";
-@import "swiper/css/navigation";
-@import "swiper/css/pagination";
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 .feedback {
@@ -83,7 +79,7 @@
 
 .feedback-item {
   height: auto;
-  display: flex !important;
+  display: flex;
   flex-direction: column;
 }
 
@@ -123,15 +119,18 @@
   justify-content: space-between;
   margin-top: 48px;
 }
-
 .feedback-dots.swiper-pagination {
+  gap: 4px;
   position: static;
   display: flex;
-  gap: 8px;
   width: auto;
   margin: 0;
 }
-
+@media screen and (min-width: 768px) {
+.feedback-dots.swiper-pagination {
+  gap: 8px;
+}
+}
 .feedback-dots .swiper-pagination-bullet {
   width: 12px;
   height: 12px;
@@ -145,7 +144,7 @@
 
 .feedback-dots .swiper-pagination-bullet-active {
   opacity: 1; 
-  background-color: #080c09 !important;
+  background-color: #080c09;
 }
 .swaper-btn-subbox {
   display: flex;
@@ -171,7 +170,7 @@ padding: 12px;
 
 .swiper-button-prev::after,
 .swiper-button-next::after {
-  display: none !important;
+  display: none;
 }
 
 .swiper-button-prev svg,
@@ -192,28 +191,28 @@ padding: 12px;
 }
 
 .swiper-button-disabled {
-  opacity: 0.3 !important;
+  opacity: 0.3;
   cursor: default;
   pointer-events: none;
 }
 
-star-rating-container {
-  display: flex !important;
-  justify-content: flex-start !important;
+.star-rating-container {
+  display: flex ;
+  justify-content: flex-start;
   gap: 4px;
   margin-bottom: 16px;
 }
 
 .star-rating-container .fa-star-half-alt {
-  opacity: 1 !important;
-  color: #080c09 !important;
+  opacity: 1 ;
+  color: #080c09;
 }
 
 .star-rating-container i {
   position: relative;
   display: inline-block;
   font-size: 18px;
-  color: #080c09 !important;
+  color: #080c09;
   font-style: normal;
 }
 

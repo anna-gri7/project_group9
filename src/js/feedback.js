@@ -1,6 +1,7 @@
 import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css/pagination';
+import "swiper/css";
 import axios from 'axios';
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
@@ -52,7 +53,7 @@ function createMarkup(feedbacks) {
   }).join('');
 }
 
-// Ініціалізація бібліотеки Raty
+
 export function initRatings() {
   const ratings = document.querySelectorAll('.star-rating-container');
   
@@ -89,7 +90,7 @@ async function initFeedbackSection() {
     pagination: {
       el: '.feedback-dots',
       clickable: true,
-      renderBullet: (className) => `<li class="${className}"></li>`,
+      renderBullet: (index, className) => `<li class="${className}"></li>`,
     },
     navigation: {
       nextEl: '.swiper-button-next',
