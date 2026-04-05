@@ -1,40 +1,25 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
-.feedback {
-  padding-top: 64px;
-  padding-bottom: 64px;
-  background-color: #ffffff;
-}
-@media screen and (min-width: 768px) {
-  .feedback {
-    padding-top: 32px;
-    padding-bottom: 32px;
-  }
-}
-@media screen and (min-width: 1440px) {
-  .feedback {
-    padding-top: 64px;
-    padding-bottom: 64px;
-  }
-}
-
 .feedbacks-container {
   max-width: 375px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 @media screen and (min-width: 768px) {
   .feedbacks-container {
     max-width: 768px;
-    padding: 0 32px;
+    padding-top: 32px;
+    padding-bottom: 32px;
   }
 }
 
 @media screen and (min-width: 1440px) {
   .feedbacks-container {
     max-width: 1440px;
-    padding: 0 64px;
+    padding-top: 64px;
+    padding-bottom: 64px;
   }
 }
 
