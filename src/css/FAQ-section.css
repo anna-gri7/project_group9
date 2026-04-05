@@ -37,6 +37,7 @@ button {
 .faq-item {
   margin-bottom: auto;
   border-bottom: 1px solid rgba(8, 12, 9, 0.15);
+  transition: background-color 300ms ease;
 }
 
 .answ-txt {
@@ -55,7 +56,7 @@ button {
 }
 
 .answer-trigger {
-  padding: 20px 0;
+  align-self: center;
   width: 32px;
   height: 32px;
   flex-shrink: 0;
@@ -69,7 +70,8 @@ button {
   transform: rotate(180deg);
 }
 
-.faq-item:hover {
+.faq-item:hover,
+.faq-item:has(.faq-btn:focus-visible) {
   background-color: rgba(8, 12, 9, 0.03);
 }
 
