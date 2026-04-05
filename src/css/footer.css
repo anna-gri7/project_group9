@@ -3,7 +3,7 @@
   --red-oxide: #6b0609;
   --white: #ffffff;
   --cod-gray: #080c09;
-  --font-family-raleway: "Raleway", Helvetica, sans-serif;
+  --font-family-raleway: 'Raleway', Helvetica, sans-serif;
   --font-size-s: 14px;
   --font-size-m: 16px;
 }
@@ -53,6 +53,10 @@
   object-fit: contain;
   display: block;
   fill: var(--white);
+}
+.footer-social-icon {
+  fill: white;
+  color: white;
 }
 
 .footer-info {
