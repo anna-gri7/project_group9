@@ -48,9 +48,7 @@
 }
 
 .footer-logo-img {
-  height: 49px;
-  width: 220px;
-  object-fit: contain;
+  margin-bottom: 24px;
   display: block;
   fill: var(--white);
 }
@@ -95,11 +93,11 @@
   width: 100%;
   justify-content: center;
   text-decoration: none;
-  transition: opacity 0.3s ease;
+  transition: color 0.3s ease;
 }
 
-.footer-link:hover {
-  opacity: 0.8;
+.footer-link-style:hover {
+  color: var(--cod-gray);
 }
 
 .footer-link-text {
@@ -187,6 +185,10 @@
     flex-direction: row;
     gap: 80px;
     padding: 0 64px;
+  }
+
+  .footer-logo-img {
+    margin-bottom: 0;
   }
 
   .footer-logo {
