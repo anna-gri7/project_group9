@@ -67,9 +67,11 @@ body.no-scroll {
 .nav-link {
   padding-bottom: 16px;
   padding-top: 16px;
+  transition: color 0.3s ease;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:focus {
   color: #6B0609;
 }
 
@@ -150,6 +152,7 @@ body.no-scroll {
   text-decoration: none;
   margin-top: 8px;
   transition: opacity 0.3s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(8, 12, 9, 0.15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
 }
 
 .mobile-nav-btn:hover,
@@ -252,6 +255,7 @@ body.no-scroll {
     text-decoration: none;
     font-size: 16px;
     transition: opacity 0.3s ease;
+    box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(8, 12, 9, 0.15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
   }
 
   .nav-btn:hover,
