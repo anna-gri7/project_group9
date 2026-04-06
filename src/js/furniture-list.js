@@ -178,6 +178,7 @@ categories.addEventListener('click', async e => {
   });
   target.classList.add('active-category');
   id = target.dataset.id === 'all-categories' ? null : target.dataset.id;
+  items.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
 async function init() {

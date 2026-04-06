@@ -45,7 +45,8 @@ body.no-scroll {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 64px;
+  padding-bottom: 16px;
+  padding-top: 16px;
 }
 
 .header-nav {
@@ -61,6 +62,17 @@ body.no-scroll {
 .nav-list {
   display: none;
   list-style: none;
+}
+
+.nav-link {
+  padding-bottom: 16px;
+  padding-top: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #6B0609;
 }
 
 .burger-btn {
@@ -139,6 +151,13 @@ body.no-scroll {
   border-radius: 100px;
   text-decoration: none;
   margin-top: 8px;
+  transition: opacity 0.3s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(8, 12, 9, 0.15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
+}
+
+.mobile-nav-btn:hover,
+.mobile-nav-btn:focus {
+  opacity: 0.5;
 }
 
 @media (min-width: 768px) and (max-width: 1439px) {
@@ -166,6 +185,10 @@ body.no-scroll {
 
   .mobile-menu-container .logo-link {
     display: none;
+  }
+
+  .logo-link:hover {
+    fill:#6B0609;
   }
 
   .mobile-menu-header {
@@ -231,5 +254,12 @@ body.no-scroll {
     border-radius: 100px;
     text-decoration: none;
     font-size: 16px;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(8, 12, 9, 0.15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-btn:hover,
+  .nav-btn:focus {
+    opacity: 0.5;
   }
 }
