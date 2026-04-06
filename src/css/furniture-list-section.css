@@ -166,8 +166,9 @@ h2 {
 
 .pagination {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-self: center;
+  width: 100%;
 }
 
 .pagination-arrows {
@@ -244,6 +245,10 @@ h2 {
   .load-more-btn {
      padding: 10px 120px;
      width: auto;
+  }
+
+  .pagination {
+    width: auto;
   }
 
   .pagination-arrows {
