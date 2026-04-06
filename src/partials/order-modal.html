@@ -6,7 +6,7 @@
 
     <h2 class="order-title">Замовити зворотний зв'язок</h2>
 
-    <form class="order-form">
+    <form class="order-form" novalidate>
       <div class="order-form-field">
         <label class="order-form-label" for="user-name">Ім'я*</label>
         <input
@@ -17,6 +17,7 @@
           placeholder="Дмитро"
           required
         />
+        <p class="error-text">Тільки букви (мінімум 2)</p>
       </div>
 
       <div class="order-form-field">
@@ -29,6 +30,7 @@
           placeholder="38 099 123 22 11"
           required
         />
+        <p class="error-text">Введіть 12 цифр</p>
       </div>
 
       <div class="order-form-field">
