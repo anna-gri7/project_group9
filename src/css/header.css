@@ -233,3 +233,15 @@ body.no-scroll {
     font-size: 16px;
   }
 }
+.nav-btn:hover, .nav-btn:focus, .nav-link:hover, .nav-link:focus,
+.burger-btn:hover, .burger-btn:focus, .mobile-menu-close:hover, .mobile-menu-close:focus {
+  opacity: 50%;
+}
+.nav-btn{
+  box-shadow:
+    inset 0px 32px 24px rgba(255, 255, 255, 0.05),
+    inset 0px 2px 1px rgba(255, 255, 255, 0.25),
+    inset 0px 0px 0px 1px rgba(12, 9, 8, 0.15),
+    inset 0px -2px 1px 0px rgba(0,0,0, 0.20),
+    inset 0px 1px 2px 0px rgba(12, 9, 8, 0.05);
+}
