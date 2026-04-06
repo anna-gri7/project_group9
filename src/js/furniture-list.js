@@ -4,12 +4,14 @@ import 'izitoast/dist/css/iziToast.min.css';
 import { showLoader, hideLoader } from './loader.js';
 
 const BASE_URL = import.meta.env.BASE_URL;
+const ITEMS_PER_PAGE = 8;
 const categories = document.querySelector('.categories');
 const items = document.querySelector('.items');
+const pagination = document.querySelector('.pagination');
 const loadBtn = document.querySelector('.load-more-btn');
 
-const ITEMS_PER_PAGE = 8;
-let page = 1;
+let currentPage = 1;
+let totalPages = 0;
 let id = null;
 
 const categoryImages = {
@@ -105,7 +107,6 @@ function categoriesTemplate(itemsData) {
       Всі товари
     </li>
   `;
-
   markup += itemsData.map(categoryTemplate).join('');
   return markup;
 }
@@ -117,7 +118,6 @@ function furnitureTemplate(item) {
         `<li class="furnitures-color" style="background-color:${color}"></li>`
     )
     .join('');
-
   return `
     <li class="item-card" data-id="${item._id}">
       <img src="${item.images[0]}" alt="${item.name}">
@@ -135,29 +135,21 @@ function furnituresTemplate(data) {
   return data.map(furnitureTemplate).join('');
 }
 
-function showLoadMoreButton() {
-  loadBtn.classList.remove('hidden');
-}
-
-function hideLoadMoreButton() {
-  loadBtn.classList.add('hidden');
-}
-
-async function loadFurniture(reset = false) {
+async function loadFurniture(clearItems = false) {
   try {
     showLoader();
-    if (reset) {
-      page = 1;
+    if (clearItems) {
       items.innerHTML = '';
     }
-    loadBtn.disabled = true;
-    const data = await api.getFurniture(page, id);
+    const data = await api.getFurniture(currentPage, id);
     items.insertAdjacentHTML('beforeend', furnituresTemplate(data.furnitures));
-    page++;
-    if (page * ITEMS_PER_PAGE > data.totalItems) {
-      hideLoadMoreButton();
+    totalPages = Math.ceil(data.totalItems / ITEMS_PER_PAGE);
+    pagination.innerHTML = '';
+    renderPagination(totalPages, currentPage);
+    if (currentPage >= totalPages) {
+      loadBtn.classList.add('hidden');
     } else {
-      showLoadMoreButton();
+      loadBtn.classList.remove('hidden');
     }
   } catch (error) {
     iziToast.show({
@@ -166,10 +158,94 @@ async function loadFurniture(reset = false) {
       position: 'topRight',
     });
   } finally {
-    loadBtn.disabled = false;
     hideLoader();
   }
 }
+
+function renderPagination(totalPages, currentPage = 1) {
+  if (totalPages <= 1) return;
+  pagination.innerHTML = '';
+  let markup = `<button type="button" class="pagination-arrows back-arrow"><svg class="left-arrow" width="24" height="24">
+        <use href="${BASE_URL}/img/left-arrow.svg"></use>
+      </svg></button>`;
+  if (currentPage <= 2) {
+    for (let i = 1; i <= Math.min(3, totalPages); i++) {
+      markup += `<div class="pagination-choice" data-page-number="${i}">${i}</div>`;
+    }
+  } else {
+    markup += `<div class="pagination-choice" data-page-number="1">1</div>`;
+    markup += `<div class="pagination-dots">...</div>`;
+    for (
+      let i = currentPage - 1;
+      i <= currentPage + 1 && i <= totalPages - 1;
+      i++
+    ) {
+      markup += `<div class="pagination-choice" data-page-number="${i}">${i}</div>`;
+    }
+  }
+  if (currentPage < totalPages - 1) {
+    markup += `<div class="pagination-dots">...</div>`;
+  }
+  markup += `<div class="pagination-choice" data-page-number="${totalPages}">${totalPages}</div>`;
+  markup += `<button type="button" class="pagination-arrows forward-arrow"><svg class="left-arrow" width="24" height="24">
+        <use href="${BASE_URL}/img/right-arrow.svg"></use>
+      </svg></button>`;
+  pagination.insertAdjacentHTML('beforeend', markup);
+  const pages = document.querySelectorAll('[data-page-number]');
+  pages.forEach(page => {
+    page.classList.toggle(
+      'active-page',
+      Number(page.dataset.pageNumber) === currentPage
+    );
+  });
+}
+
+loadBtn.addEventListener('click', async () => {
+  if (currentPage >= totalPages) return;
+  currentPage++;
+  const lastItem = items.lastElementChild;
+  await loadFurniture(false);
+  if (lastItem) {
+    lastItem.nextElementSibling?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+  loadBtn.blur();
+});
+
+pagination.addEventListener('click', async e => {
+  const pageBtn = e.target.closest('[data-page-number]');
+  const arrowBtn = e.target.closest('.pagination-arrows');
+  if (pageBtn) {
+    currentPage = Number(pageBtn.dataset.pageNumber);
+    items.style.height = '790px';
+    await loadFurniture(true);
+    items.style.height = 'auto';
+    items.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  if (arrowBtn) {
+    if (
+      arrowBtn.classList.contains('forward-arrow') &&
+      currentPage < totalPages
+    ) {
+      currentPage++;
+      items.style.height = '790px';
+      await loadFurniture(true);
+      items.style.height = 'auto';
+      items.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (arrowBtn.classList.contains('back-arrow') && currentPage > 1) {
+      currentPage--;
+      items.style.height = '790px';
+      await loadFurniture(true);
+      items.style.height = 'auto';
+      items.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    arrowBtn.blur();
+  }
+});
+
 categories.addEventListener('click', async e => {
   const target = e.target.closest('.category-item');
   if (!target) return;
@@ -178,7 +254,8 @@ categories.addEventListener('click', async e => {
   });
   target.classList.add('active-category');
   id = target.dataset.id === 'all-categories' ? null : target.dataset.id;
-  items.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  currentPage = 1;
+  await loadFurniture(true);
 });
 
 async function init() {
@@ -196,27 +273,6 @@ async function init() {
       position: 'topRight',
     });
   }
-  const allCategoriesItem = document.querySelector(
-    '[data-id="all-categories"]'
-  );
-  if (allCategoriesItem) {
-    allCategoriesItem.classList.add('active-category');
-  }
 }
 
 init();
-
-categories.addEventListener('click', async e => {
-  const target = e.target.closest('.category-item');
-  if (!target) return;
-  showLoader();
-  id = target.dataset.id === 'all-categories' ? null : target.dataset.id;
-  await loadFurniture(true);
-  hideLoader();
-});
-
-loadBtn.addEventListener('click', async () => {
-  showLoader();
-  await loadFurniture();
-  hideLoader();
-});
