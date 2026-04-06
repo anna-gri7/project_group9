@@ -68,6 +68,7 @@ async function renderFurnitureDetails(furnitureId) {
 
     console.log('Processing furniture data:', furniture);
 
+    let currentIndex = 0;
 
     if (furniture.images && furniture.images.length > 0) {
       refs.mainImage.src = furniture.images[0];
@@ -75,31 +76,36 @@ async function renderFurnitureDetails(furnitureId) {
     }
 
 
-    refs.thumbnailsList.innerHTML = '';
-    if (furniture.images && furniture.images.length > 0) {
-      furniture.images.forEach((image, index) => {
-        const li = document.createElement('li');
-        li.className = `furniture-thumbnail ${index === 0 ? 'active' : ''}`;
-        li.innerHTML = `<img src="${image}" alt="Thumbnail ${index + 1}" data-index="${index}">`;
+    function renderThumbnails() {
+      refs.thumbnailsList.innerHTML = '';
+      if (furniture.images && furniture.images.length > 0) {
+        furniture.images.forEach((image, index) => {
+          if (index === currentIndex) return; 
+          const li = document.createElement('li');
+          li.className = 'furniture-thumbnail';
+          li.innerHTML = `<img src="${image}" alt="Thumbnail ${index + 1}" data-index="${index}">`;
 
-        li.addEventListener('click', () => {
-          refs.mainImage.src = image;
-          document.querySelectorAll('.furniture-thumbnail').forEach(thumb => {
-            thumb.classList.remove('active');
+          li.addEventListener('click', () => {
+            currentIndex = index;
+            refs.mainImage.src = image;
+            renderThumbnails(); 
           });
-          li.classList.add('active');
-        });
 
-        refs.thumbnailsList.appendChild(li);
-      });
+          refs.thumbnailsList.appendChild(li);
+        });
+      }
     }
+
+    renderThumbnails();
 
     refs.furnitureName.textContent = furniture.name || '';
     refs.furnitureCategory.textContent = furniture.category?.name || '';
     refs.furniturePrice.textContent = furniture.price ? `${furniture.price.toLocaleString('uk-UA')} грн` : '';
 
 
-    refs.furnitureRating.innerHTML = generateRatingStars(furniture.rating || 0);
+    console.log('Furniture rating:', furniture.rating);
+    const rating = furniture.rate || 4;
+    refs.furnitureRating.innerHTML = generateRatingStars(rating);
 
 
     refs.colorsList.innerHTML = '';
@@ -138,13 +144,15 @@ async function renderFurnitureDetails(furnitureId) {
 
     refs.furnitureDescription.textContent = furniture.description || '';
 
-    // Set dimensions - using sample data for now
-    const sampleDimensions = { width: 120, height: 80, depth: 60 };
-    const formattedDimensions = formatDimensions(sampleDimensions);
+
+    const dimensions = furniture.dimensions || { width: 120, height: 80, depth: 60 };
+    const formattedDimensions = formatDimensions(dimensions);
 
     if (refs.furnitureSize) {
-      refs.furnitureSize.textContent = formattedDimensions;
+      refs.furnitureSize.textContent = furniture.sizes;
     }
+
+    console.log('Furniture dimensions:', dimensions);
 
 
     toggleModal();
@@ -178,7 +186,7 @@ function openOrderModal() {
   const orderBackdrop = document.querySelector('[data-order-modal]');
   if (orderBackdrop && orderBackdrop.classList.contains('is-hidden')) {
     orderBackdrop.classList.remove('is-hidden');
-    // Only add no-scroll if there's no existing scroll prevention
+
     if (!document.body.classList.contains('no-scroll')) {
       document.body.classList.add('no-scroll');
     }
