@@ -3,6 +3,7 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const refs = {
 openBtns: document.querySelectorAll("[data-order-modal-open]"),
+orderBtn: document.querySelector(".furniture-order-btn"),
 closeBtn: document.querySelector("[data-order-modal-close]"),
 backdrop: document.querySelector("[data-order-modal]"),
 form: document.querySelector(".order-form"),
@@ -10,6 +11,12 @@ nameInput: document.querySelector("#user-name"),
 phoneInput: document.querySelector("#user-phone"),
 };
 
+document.querySelector('.items')?.addEventListener('click', (e) => {
+const card = e.target.closest('.item-card');
+if (card) {
+currentProductId = card.dataset.id; 
+}
+});
 if (refs.form) refs.form.setAttribute("novalidate", "");
 
 let currentProductId = "";
@@ -17,7 +24,10 @@ function toggleModal() {
 refs.backdrop.classList.toggle("is-hidden");
 document.body.classList.toggle("no-scroll");
 }
-
+window.openOrderModal = function(product) {
+  currentProductId = product._id;
+  toggleModal();
+};
 refs.openBtns.forEach(btn => {
 btn.addEventListener("click", (e) => {
 const productId = btn.getAttribute("data-id");
@@ -102,7 +112,8 @@ refs.form?.addEventListener("submit", async e => {
 
 const nameValue = refs.nameInput.value.trim();
 const phoneValue = refs.phoneInput.value.trim();
-const userComment = e.currentTarget.elements.userComment.value.trim();
+    
+const userComment = e.currentTarget.elements.userComment?.value.trim() || "";
 let hasError = false;
 
 const nameRegex = /^[a-zA-Zа-яА-ЯіїєІЇЄґҐ\s]+$/;
@@ -128,13 +139,16 @@ message: "Заповніть поля коректно",
 position: "topRight",
 });
 return;
-}
+    }
+    
+
+const activeColorInput = document.querySelector('input[name="color"]:checked');
 const cleanPhone = phoneValue.replace(/\D/g, "");
 const formData = {
 name: nameValue,
 phone: cleanPhone,
 modelId: currentProductId,
-color: window.selectedMarker || "#1212ca",
+color: activeColorInput ? activeColorInput.value : "#1212ca",
 comment: userComment.length >= 5 ? userComment : "Чекатиму на зворотний зв'язок",
 };
 
