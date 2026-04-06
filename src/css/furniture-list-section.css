@@ -166,14 +166,15 @@ h2 {
 
 .pagination {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-self: center;
+  width: 100%;
 }
 
 .pagination-arrows {
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  width: 35px;
+  height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,8 +197,8 @@ h2 {
 }
 
 .pagination-choice {
-  width: 57px;
-  height: 48px;
+  width: 35px;
+  height: 35px;
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -244,6 +245,21 @@ h2 {
   .load-more-btn {
      padding: 10px 120px;
      width: auto;
+  }
+
+  .pagination {
+    width: auto;
+  }
+
+  .pagination-arrows {
+    width: 48px;
+    height: 48px;
+
+  }
+
+  .pagination-choice {
+    width: 57px;
+    height: 48px;
   }
 
 }
