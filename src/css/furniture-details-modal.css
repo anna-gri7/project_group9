@@ -209,6 +209,13 @@
   color: #ffc107;
 }
 
+.furniture-star.half {
+  color: transparent;
+  background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 .furniture-star.empty {
   color: #ddd;
 }

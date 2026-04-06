@@ -22,20 +22,21 @@ const refs = {
 };
 
 let currentSelectedColor = null;
-
+let currentFurnitureId = '';
 
 function generateRatingStars(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
+  const normalizedRating = Math.max(0, Math.min(5, Math.round(rating * 2) / 2));
+  const fullStars = Math.floor(normalizedRating);
+  const hasHalfStar = normalizedRating % 1 !== 0;
   let starsHTML = '';
 
   for (let i = 0; i < 5; i++) {
     if (i < fullStars) {
-      starsHTML += '<span class="furniture-star">★</span>';
+      starsHTML += '<span class="furniture-star">&#9733;</span>';
     } else if (i === fullStars && hasHalfStar) {
-      starsHTML += '<span class="furniture-star">★</span>';
+      starsHTML += '<span class="furniture-star half">&#9733;</span>';
     } else {
-      starsHTML += '<span class="furniture-star empty">★</span>';
+      starsHTML += '<span class="furniture-star empty">&#9733;</span>';
     }
   }
 
@@ -51,15 +52,15 @@ function formatDimensions(dimensions) {
   return '';
 }
 
-
 async function renderFurnitureDetails(furnitureId) {
   try {
     showLoader();
+    currentFurnitureId = furnitureId;
     const furniture = await api.getFurnitureById(furnitureId);
 
     if (!furniture) {
       iziToast.show({
-        message: 'Помилка при завантажені деталей товару',
+        message: 'РџРѕРјРёР»РєР° РїСЂРё Р·Р°РІР°РЅС‚Р°Р¶РµРЅС– РґРµС‚Р°Р»РµР№ С‚РѕРІР°СЂСѓ',
         color: 'red',
         position: 'topRight',
       });
@@ -68,12 +69,10 @@ async function renderFurnitureDetails(furnitureId) {
 
     console.log('Processing furniture data:', furniture);
 
-
     if (furniture.images && furniture.images.length > 0) {
       refs.mainImage.src = furniture.images[0];
       refs.mainImage.alt = furniture.name;
     }
-
 
     refs.thumbnailsList.innerHTML = '';
     if (furniture.images && furniture.images.length > 0) {
@@ -96,15 +95,18 @@ async function renderFurnitureDetails(furnitureId) {
 
     refs.furnitureName.textContent = furniture.name || '';
     refs.furnitureCategory.textContent = furniture.category?.name || '';
-    refs.furniturePrice.textContent = furniture.price ? `${furniture.price.toLocaleString('uk-UA')} грн` : '';
+    refs.furniturePrice.textContent = furniture.price
+      ? `${furniture.price.toLocaleString('uk-UA')} РіСЂРЅ`
+      : '';
 
-
-    refs.furnitureRating.innerHTML = generateRatingStars(furniture.rating || 0);
-
+    refs.furnitureRating.innerHTML = generateRatingStars(
+      furniture.rate ?? furniture.rating ?? 0
+    );
 
     refs.colorsList.innerHTML = '';
     if (furniture.color && furniture.color.length > 0) {
       currentSelectedColor = furniture.color[0];
+      window.currentOrderColor = currentSelectedColor;
 
       furniture.color.forEach((color, index) => {
         const li = document.createElement('li');
@@ -123,10 +125,17 @@ async function renderFurnitureDetails(furnitureId) {
         circle.className = 'furniture-color-circle';
         circle.style.backgroundColor = color;
 
-        input.addEventListener('change', (e) => {
+        input.addEventListener('change', e => {
           if (e.target.checked) {
             currentSelectedColor = color;
+            window.currentOrderColor = color;
           }
+        });
+
+        li.addEventListener('click', () => {
+          input.checked = true;
+          currentSelectedColor = color;
+          window.currentOrderColor = color;
         });
 
         li.appendChild(input);
@@ -135,10 +144,8 @@ async function renderFurnitureDetails(furnitureId) {
       });
     }
 
-
     refs.furnitureDescription.textContent = furniture.description || '';
 
-    // Set dimensions - using sample data for now
     const sampleDimensions = { width: 120, height: 80, depth: 60 };
     const formattedDimensions = formatDimensions(sampleDimensions);
 
@@ -146,12 +153,11 @@ async function renderFurnitureDetails(furnitureId) {
       refs.furnitureSize.textContent = formattedDimensions;
     }
 
-
     toggleModal();
   } catch (error) {
     console.error('Error rendering furniture:', error);
     iziToast.show({
-      message: `Помилка: ${error.message}`,
+      message: `РџРѕРјРёР»РєР°: ${error.message}`,
       color: 'red',
       position: 'topRight',
     });
@@ -159,7 +165,6 @@ async function renderFurnitureDetails(furnitureId) {
     hideLoader();
   }
 }
-
 
 function toggleModal() {
   if (refs.backdropBtn) {
@@ -176,9 +181,14 @@ function closeModal() {
 
 function openOrderModal() {
   const orderBackdrop = document.querySelector('[data-order-modal]');
+  if (currentFurnitureId) {
+    window.currentOrderProductId = currentFurnitureId;
+  }
+  if (currentSelectedColor) {
+    window.currentOrderColor = currentSelectedColor;
+  }
   if (orderBackdrop && orderBackdrop.classList.contains('is-hidden')) {
     orderBackdrop.classList.remove('is-hidden');
-    // Only add no-scroll if there's no existing scroll prevention
     if (!document.body.classList.contains('no-scroll')) {
       document.body.classList.add('no-scroll');
     }
@@ -190,14 +200,14 @@ if (refs.closeBtn) {
 }
 
 if (refs.backdropBtn) {
-  refs.backdropBtn.addEventListener('click', (e) => {
+  refs.backdropBtn.addEventListener('click', e => {
     if (e.target === refs.backdropBtn) {
       closeModal();
     }
   });
 }
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (
     e.key === 'Escape' &&
     refs.backdropBtn &&
@@ -207,9 +217,8 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-
 if (refs.orderBtn) {
-  refs.orderBtn.addEventListener('click', (e) => {
+  refs.orderBtn.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
     closeModal();
@@ -220,7 +229,7 @@ if (refs.orderBtn) {
 }
 
 if (refs.itemsList) {
-  refs.itemsList.addEventListener('click', async (e) => {
+  refs.itemsList.addEventListener('click', async e => {
     const moreInfoBtn = e.target.closest('.more-info-btn');
     if (!moreInfoBtn) return;
 

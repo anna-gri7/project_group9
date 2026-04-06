@@ -13,17 +13,20 @@ phoneInput: document.querySelector("#user-phone"),
 if (refs.form) refs.form.setAttribute("novalidate", "");
 
 let currentProductId = "";
+
 function toggleModal() {
 refs.backdrop.classList.toggle("is-hidden");
 document.body.classList.toggle("no-scroll");
 }
 
 refs.openBtns.forEach(btn => {
-btn.addEventListener("click", (e) => {
+btn.addEventListener("click", () => {
 const productId = btn.getAttribute("data-id");
 if (productId) {
 currentProductId = productId;
-} toggleModal();
+window.currentOrderProductId = productId;
+}
+toggleModal();
 });
 });
 
@@ -62,7 +65,7 @@ error.style.display = "none";
 refs.nameInput?.addEventListener("input", e => {
 const input = e.target;
 const value = input.value.trim();
-const nameRegex = /^[a-zA-Zа-яА-ЯіїєІЇЄґҐ\s]+$/;
+const nameRegex = /^[a-zA-Zа-яА-ЯіІїЇєЄ\s]+$/;
 
 if (value.length > 0 && !nameRegex.test(value)) {
 showError(input, "Тільки букви");
@@ -71,6 +74,7 @@ else if (value.length >= 2 && nameRegex.test(value)) {
 hideError(input);
 }
 });
+
 refs.nameInput?.addEventListener("blur", e => {
 const input = e.target;
 const value = input.value.trim();
@@ -84,28 +88,30 @@ refs.phoneInput?.addEventListener("input", e => {
 const input = e.target;
 input.value = input.value.replace(/\D/g, "");
 const value = input.value;
-   
+
 if (value.length === 12 && value.startsWith("380")) {
 hideError(input);
 }
 });
+
 refs.phoneInput?.addEventListener("blur", e => {
 const input = e.target;
 const val = input.value;
+
 if (val.length > 0 && (val.length !== 12 || !val.startsWith("380"))) {
 showError(input, "Введіть 12 цифр (380...)");
 }
 });
-  
+
 refs.form?.addEventListener("submit", async e => {
- e.preventDefault();
+e.preventDefault();
 
 const nameValue = refs.nameInput.value.trim();
 const phoneValue = refs.phoneInput.value.trim();
 const userComment = e.currentTarget.elements.userComment.value.trim();
 let hasError = false;
 
-const nameRegex = /^[a-zA-Zа-яА-ЯіїєІЇЄґҐ\s]+$/;
+const nameRegex = /^[a-zA-Zа-яА-ЯіІїЇєЄ\s]+$/;
 if (nameValue.length < 2 || !nameRegex.test(nameValue)) {
 showError(refs.nameInput, "Мінімум 2 букви");
 hasError = true;
@@ -129,12 +135,24 @@ position: "topRight",
 });
 return;
 }
+
 const cleanPhone = phoneValue.replace(/\D/g, "");
+const modelId = currentProductId || window.currentOrderProductId || "";
+
+if (!modelId) {
+iziToast.error({
+title: "Помилка",
+message: "Не вдалося визначити товар для замовлення",
+position: "topRight",
+});
+return;
+}
+
 const formData = {
 name: nameValue,
 phone: cleanPhone,
-modelId: currentProductId,
-color: window.selectedMarker || "#1212ca",
+modelId,
+color: window.currentOrderColor || window.selectedMarker || "#1212ca",
 comment: userComment.length >= 5 ? userComment : "Чекатиму на зворотний зв'язок",
 };
 
@@ -149,16 +167,16 @@ headers: {
 body: JSON.stringify(formData),
 }
 );
-const orderData = await response.json(); 
+const orderData = await response.json();
 if (!response.ok) {
 throw new Error(orderData.message || "Помилка сервера");
 }
-   
+
 iziToast.success({
 title: "Успіх",
 message: `Ви замовили ${orderData.model}, номер вашого замовлення: ${orderData.orderNum}`,
 position: "topRight",
-timeout: 5000, 
+timeout: 5000,
 });
 
 e.target.reset();
