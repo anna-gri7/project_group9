@@ -166,7 +166,7 @@ h2 {
 
 .pagination {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-self: center;
   width: 100%;
 }
