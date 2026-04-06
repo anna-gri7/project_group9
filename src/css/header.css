@@ -1,4 +1,4 @@
-*{
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -72,7 +72,7 @@ body.no-scroll {
 
 .nav-link:hover,
 .nav-link:focus {
-  color: #6B0609;
+  color: #6b0609;
 }
 
 .burger-btn {
@@ -146,13 +146,18 @@ body.no-scroll {
 .mobile-nav-btn {
   display: inline-block;
   padding: 8px 123px;
-  background: #6B0609;
+  background: #6b0609;
   color: #fff;
   border-radius: 100px;
   text-decoration: none;
   margin-top: 8px;
   transition: opacity 0.3s ease-in-out;
-  box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(8, 12, 9, 0.15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 1px 2px 0 rgba(8, 12, 9, 0.05),
+    inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(8, 12, 9, 0.15),
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
 }
 
 .mobile-nav-btn:hover,
@@ -175,12 +180,12 @@ body.no-scroll {
     background: #ffffff;
     border-radius: 0;
     box-shadow: none;
-    transform: none;
-    transition: none;
+    transform: translateX(100%); /* ← ДОБАВИ */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ← ДОБАВИ */
   }
 
   .mobile-menu.is-open .mobile-menu-container {
-    transform: none;
+    transform: translateX(0); /* ← ДОБАВИ/ИЗМЕНИ на это */
   }
 
   .mobile-menu-container .logo-link {
@@ -188,7 +193,7 @@ body.no-scroll {
   }
 
   .logo-link:hover {
-    fill:#6B0609;
+    fill: #6b0609;
   }
 
   .mobile-menu-header {
@@ -214,7 +219,7 @@ body.no-scroll {
     max-width: 335px;
     height: 42px;
     padding: 8px 48px;
-    background: #6B0609;
+    background: #6b0609;
     color: #fff;
     border-radius: 100px;
     text-align: center;
@@ -249,13 +254,18 @@ body.no-scroll {
 
   .nav-btn {
     padding: 12px 24px;
-    background: #6B0609;
+    background: #6b0609;
     color: #fff;
     border-radius: 100px;
     text-decoration: none;
     font-size: 16px;
     transition: opacity 0.3s ease;
-    box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(8, 12, 9, 0.15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
+    box-shadow:
+      0 1px 2px 0 rgba(8, 12, 9, 0.05),
+      inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2),
+      inset 0 0 0 1px rgba(8, 12, 9, 0.15),
+      inset 0 2px 1px 0 rgba(255, 255, 255, 0.25),
+      inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
   }
 
   .nav-btn:hover,
