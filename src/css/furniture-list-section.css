@@ -157,18 +157,10 @@ h2 {
   box-shadow: 0 1px 2px 0 rgba(8, 12, 9, 0.05), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(8, 12, 9, 0.15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 rgba(255, 255, 255, 0.05);
 }
 
-.red-button:hover,
-.red-button:focus,
-.more-info-btn:focus,
-.more-info-btn:hover {
-  opacity: 0.5;
-}
-
 .pagination {
   display: flex;
   width: 100%;
   align-self: center;
-  width: 100%;
   justify-content: space-between;
 }
 
@@ -198,8 +190,8 @@ h2 {
 }
 
 .pagination-choice {
-  width: 57px;
-  height: 48px;
+  width: 35px;
+  height: 35px;
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -246,6 +238,13 @@ h2 {
   .load-more-btn {
      padding: 10px 120px;
      width: auto;
+  }
+
+  .red-button:hover,
+  .red-button:focus,
+  .more-info-btn:focus,
+  .more-info-btn:hover {
+    opacity: 0.5;
   }
 
   .pagination {
