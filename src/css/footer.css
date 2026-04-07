@@ -111,8 +111,8 @@
   transition: color 0.3s ease;
 }
 
-.footer-link-style:hover,
-.footer-link-style:focus {
+.footer-link:hover,
+.footer-link:focus {
   color: #000;
 }
 
@@ -141,7 +141,8 @@
   transition: fill 0.3s ease;
 }
 
-.footer-socials a:hover .footer-social-icon {
+.footer-socials a:hover .footer-social-icon,
+.footer-socials a:focus .footer-social-icon {
   fill: var(--cod-gray);
 }
 

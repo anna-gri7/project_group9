@@ -337,3 +337,9 @@ padding: 64px 20px 44px;  border-radius: 8px;
 .furniture-order-btn:active {
   opacity: 0.3;
 }
+
+@media screen and (min-width: 768px) {
+  .furniture-order-btn {
+    align-self: flex-start;
+  }
+}
