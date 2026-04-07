@@ -147,9 +147,9 @@ async function loadFurniture(clearItems = false) {
     pagination.innerHTML = '';
     renderPagination(totalPages, currentPage);
     if (currentPage >= totalPages) {
-      loadBtn.classList.add('hidden');
+      loadBtn.style.display = "none";
     } else {
-      loadBtn.classList.remove('hidden');
+      loadBtn.style.display = "block";
     }
   } catch (error) {
     iziToast.show({
@@ -164,6 +164,7 @@ async function loadFurniture(clearItems = false) {
 
 function renderPagination(totalPages, currentPage = 1) {
   if (totalPages <= 1) return;
+  pagination.style.display = "flex";
   pagination.innerHTML = '';
   let markup = `<button type="button" class="pagination-arrows back-arrow"><svg class="left-arrow" width="24" height="24">
         <use href="${BASE_URL}/img/left-arrow.svg"></use>
@@ -255,6 +256,7 @@ categories.addEventListener('click', async e => {
   target.classList.add('active-category');
   id = target.dataset.id === 'all-categories' ? null : target.dataset.id;
   currentPage = 1;
+  items.scrollIntoView({ behavior: 'smooth', block: 'start' });
   await loadFurniture(true);
 });
 
