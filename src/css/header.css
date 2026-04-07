@@ -132,8 +132,8 @@ body.no-scroll {
 }
 
 .mobile-nav-btn {
-  display: block;
   width: 100%;
+  display: block;
   padding: 8px 0px;
   background: #6B0609;
   color: #fff;
