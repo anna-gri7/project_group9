@@ -116,6 +116,9 @@ async function renderFurnitureDetails(furnitureId) {
         const li = document.createElement('li');
         li.className = 'furniture-color-item';
 
+        const label = document.createElement('label');
+        label.className = 'furniture-color-label';
+
         const input = document.createElement('input');
         input.type = 'radio';
         input.name = 'color';
@@ -135,8 +138,9 @@ async function renderFurnitureDetails(furnitureId) {
           }
         });
 
-        li.appendChild(input);
-        li.appendChild(circle);
+        label.appendChild(input);
+        label.appendChild(circle);
+        li.appendChild(label);
         refs.colorsList.appendChild(li);
       });
     }
