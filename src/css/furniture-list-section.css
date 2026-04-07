@@ -139,12 +139,12 @@ h2 {
 }
 
 .load-more-btn {
+  display: none;
   width: 100%;
   padding: 10px 90px;
 }
 
 .red-button {
-  display: none;
   font-family: 'Raleway', sans-serif;
   font-weight: 500;
   line-height: 160%;
