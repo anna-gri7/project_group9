@@ -136,7 +136,7 @@ if (hasError) {
 iziToast.error({
 title: 'Упс!',
 message: 'Заповніть поля коректно',
-position: 'topRight',
+position: 'topCenter',
 backgroundColor: '#fff5f5',
 titleColor: '#c53030',
 messageColor: '#742a2a',
@@ -178,7 +178,7 @@ throw new Error(orderData.message || "Помилка сервера");
 iziToast.success({
 title: 'Замовлення прийнято!',
 message: `Дякуємо, ${orderData.name}! Номер замовлення: ${orderData.orderNum}. Очікуйте на дзвінок від менеджера.`,
-position: 'topRight',
+position: 'topCenter',
 timeout: 6000,
 close: true,
 pauseOnHover: true,
