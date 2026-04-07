@@ -24,7 +24,7 @@ async function fetchFeedbacks() {
        limit: "10"
     }});
     const data = Array.isArray(response.data) ? response.data : response.data.feedbacks;
-        console.log(data)
+        
     return data;
   } catch (error) {
     console.log(error)
