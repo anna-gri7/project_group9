@@ -134,7 +134,7 @@ hideError(refs.phoneInput);
 
 if (hasError) {
 iziToast.error({
-title: 'Помилка!',
+title: 'Упс!',
 message: 'Заповніть поля коректно',
 position: 'topRight',
 backgroundColor: '#fff5f5',
