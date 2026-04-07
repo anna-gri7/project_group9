@@ -69,35 +69,44 @@ async function renderFurnitureDetails(furnitureId) {
 
     console.log('Processing furniture data:', furniture);
 
+    let currentIndex = 0;
+
     if (furniture.images && furniture.images.length > 0) {
       refs.mainImage.src = furniture.images[0];
       refs.mainImage.alt = furniture.name;
     }
 
-    refs.thumbnailsList.innerHTML = '';
-    if (furniture.images && furniture.images.length > 0) {
-      furniture.images.forEach((image, index) => {
-        const li = document.createElement('li');
-        li.className = `furniture-thumbnail ${index === 0 ? 'active' : ''}`;
-        li.innerHTML = `<img src="${image}" alt="Thumbnail ${index + 1}" data-index="${index}">`;
 
-        li.addEventListener('click', () => {
-          refs.mainImage.src = image;
-          document.querySelectorAll('.furniture-thumbnail').forEach(thumb => {
-            thumb.classList.remove('active');
+    function renderThumbnails() {
+      refs.thumbnailsList.innerHTML = '';
+      if (furniture.images && furniture.images.length > 0) {
+        furniture.images.forEach((image, index) => {
+          if (index === currentIndex) return; 
+          const li = document.createElement('li');
+          li.className = 'furniture-thumbnail';
+          li.innerHTML = `<img src="${image}" alt="Thumbnail ${index + 1}" data-index="${index}">`;
+
+          li.addEventListener('click', () => {
+            currentIndex = index;
+            refs.mainImage.src = image;
+            renderThumbnails(); 
           });
-          li.classList.add('active');
-        });
 
-        refs.thumbnailsList.appendChild(li);
-      });
+          refs.thumbnailsList.appendChild(li);
+        });
+      }
     }
+
+    renderThumbnails();
 
     refs.furnitureName.textContent = furniture.name || '';
     refs.furnitureCategory.textContent = furniture.category?.name || '';
-    refs.furniturePrice.textContent = furniture.price
-      ? `${furniture.price.toLocaleString('uk-UA')} РіСЂРЅ`
-      : '';
+    refs.furniturePrice.textContent = furniture.price ? `${furniture.price.toLocaleString('uk-UA')} грн` : '';
+
+
+    console.log('Furniture rating:', furniture.rating);
+    const rating = furniture.rate || 4;
+    refs.furnitureRating.innerHTML = generateRatingStars(rating);
 
     refs.furnitureRating.innerHTML = generateRatingStars(
       furniture.rate ?? furniture.rating ?? 0
@@ -111,6 +120,9 @@ async function renderFurnitureDetails(furnitureId) {
       furniture.color.forEach((color, index) => {
         const li = document.createElement('li');
         li.className = 'furniture-color-item';
+
+        const label = document.createElement('label');
+        label.className = 'furniture-color-label';
 
         const input = document.createElement('input');
         input.type = 'radio';
@@ -132,26 +144,25 @@ async function renderFurnitureDetails(furnitureId) {
           }
         });
 
-        li.addEventListener('click', () => {
-          input.checked = true;
-          currentSelectedColor = color;
-          window.currentOrderColor = color;
-        });
-
-        li.appendChild(input);
-        li.appendChild(circle);
+        label.appendChild(input);
+        label.appendChild(circle);
+        li.appendChild(label);
         refs.colorsList.appendChild(li);
       });
     }
 
     refs.furnitureDescription.textContent = furniture.description || '';
 
-    const sampleDimensions = { width: 120, height: 80, depth: 60 };
-    const formattedDimensions = formatDimensions(sampleDimensions);
+
+    const dimensions = furniture.dimensions || { width: 120, height: 80, depth: 60 };
+    const formattedDimensions = formatDimensions(dimensions);
 
     if (refs.furnitureSize) {
-      refs.furnitureSize.textContent = formattedDimensions;
+      refs.furnitureSize.textContent = furniture.sizes;
     }
+
+    console.log('Furniture dimensions:', dimensions);
+
 
     toggleModal();
   } catch (error) {
@@ -189,6 +200,7 @@ function openOrderModal() {
   }
   if (orderBackdrop && orderBackdrop.classList.contains('is-hidden')) {
     orderBackdrop.classList.remove('is-hidden');
+
     if (!document.body.classList.contains('no-scroll')) {
       document.body.classList.add('no-scroll');
     }

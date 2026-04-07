@@ -3,6 +3,7 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const refs = {
 openBtns: document.querySelectorAll("[data-order-modal-open]"),
+orderBtn: document.querySelector(".furniture-order-btn"),
 closeBtn: document.querySelector("[data-order-modal-close]"),
 backdrop: document.querySelector("[data-order-modal]"),
 form: document.querySelector(".order-form"),
@@ -10,6 +11,12 @@ nameInput: document.querySelector("#user-name"),
 phoneInput: document.querySelector("#user-phone"),
 };
 
+document.querySelector('.items')?.addEventListener('click', (e) => {
+const card = e.target.closest('.item-card');
+if (card) {
+currentProductId = card.dataset.id; 
+}
+});
 if (refs.form) refs.form.setAttribute("novalidate", "");
 
 let currentProductId = "";
@@ -18,7 +25,10 @@ function toggleModal() {
 refs.backdrop.classList.toggle("is-hidden");
 document.body.classList.toggle("no-scroll");
 }
-
+window.openOrderModal = function(product) {
+  currentProductId = product._id;
+  toggleModal();
+};
 refs.openBtns.forEach(btn => {
 btn.addEventListener("click", () => {
 const productId = btn.getAttribute("data-id");
@@ -108,7 +118,8 @@ e.preventDefault();
 
 const nameValue = refs.nameInput.value.trim();
 const phoneValue = refs.phoneInput.value.trim();
-const userComment = e.currentTarget.elements.userComment.value.trim();
+    
+const userComment = e.currentTarget.elements.userComment?.value.trim() || "";
 let hasError = false;
 
 const nameRegex = /^[a-zA-Zа-яА-ЯіІїЇєЄ\s]+$/;
@@ -129,13 +140,22 @@ hideError(refs.phoneInput);
 
 if (hasError) {
 iziToast.error({
-title: "Помилка",
-message: "Заповніть поля коректно",
-position: "topRight",
+title: 'Упс!',
+message: 'Заповніть поля коректно',
+position: 'topCenter',
+backgroundColor: '#fff5f5',
+titleColor: '#c53030',
+messageColor: '#742a2a',
+iconColor: '#f56565',
+progressBarColor: '#f56565',
+borderRadius: '12px',
+transitionIn: 'shake',
 });
 return;
-}
+    }
+    
 
+const activeColorInput = document.querySelector('input[name="color"]:checked');
 const cleanPhone = phoneValue.replace(/\D/g, "");
 const modelId = currentProductId || window.currentOrderProductId || "";
 
@@ -151,8 +171,8 @@ return;
 const formData = {
 name: nameValue,
 phone: cleanPhone,
-modelId,
-color: window.currentOrderColor || window.selectedMarker || "#1212ca",
+modelId: currentProductId,
+color: activeColorInput ? activeColorInput.value : "#1212ca",
 comment: userComment.length >= 5 ? userComment : "Чекатиму на зворотний зв'язок",
 };
 
@@ -173,11 +193,23 @@ throw new Error(orderData.message || "Помилка сервера");
 }
 
 iziToast.success({
-title: "Успіх",
-message: `Ви замовили ${orderData.model}, номер вашого замовлення: ${orderData.orderNum}`,
-position: "topRight",
-timeout: 5000,
+title: 'Замовлення прийнято!',
+message: `Дякуємо, ${orderData.name}! Номер замовлення: ${orderData.orderNum}. Очікуйте на дзвінок від менеджера.`,
+position: 'topCenter',
+timeout: 6000,
+close: true,
+pauseOnHover: true,
+displayMode: 2,
+backgroundColor: '#ffffff', 
+titleColor: '#1b1d1b',      
+messageColor: '#4f544f',    
+iconColor: '#3cbc81',       
+progressBarColor: '#3cbc81', 
+borderRadius: '12px',       
+transitionIn: 'fadeInUp',   
+boxShadow: '0 10px 20px rgba(0,0,0,0.1)', 
 });
+  
 
 e.target.reset();
 toggleModal();
