@@ -134,9 +134,16 @@ hideError(refs.phoneInput);
 
 if (hasError) {
 iziToast.error({
-title: "Помилка",
-message: "Заповніть поля коректно",
-position: "topRight",
+title: 'Помилка!',
+message: 'Заповніть поля коректно',
+position: 'topRight',
+backgroundColor: '#fff5f5',
+titleColor: '#c53030',
+messageColor: '#742a2a',
+iconColor: '#f56565',
+progressBarColor: '#f56565',
+borderRadius: '12px',
+transitionIn: 'shake',
 });
 return;
     }
@@ -169,11 +176,23 @@ throw new Error(orderData.message || "Помилка сервера");
 }
    
 iziToast.success({
-title: "Успіх",
-message: `Ви замовили ${orderData.model}, номер вашого замовлення: ${orderData.orderNum}`,
-position: "topRight",
-timeout: 5000, 
+title: 'Замовлення прийнято!',
+message: `Дякуємо, ${orderData.name}! Номер замовлення: ${orderData.orderNum}. Очікуйте на дзвінок від менеджера.`,
+position: 'topRight',
+timeout: 6000,
+close: true,
+pauseOnHover: true,
+displayMode: 2,
+backgroundColor: '#ffffff', 
+titleColor: '#1b1d1b',      
+messageColor: '#4f544f',    
+iconColor: '#3cbc81',       
+progressBarColor: '#3cbc81', 
+borderRadius: '12px',       
+transitionIn: 'fadeInUp',   
+boxShadow: '0 10px 20px rgba(0,0,0,0.1)', 
 });
+  
 
 e.target.reset();
 toggleModal();
