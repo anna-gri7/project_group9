@@ -5,7 +5,7 @@
   background-color: #F0E6E6;
 }
 
-.about-container {
+.about-section {
   padding-top: 64px;
   padding-bottom: 64px;
 }
@@ -55,9 +55,9 @@
 
 /* TABLET */
 @media screen and (min-width: 768px) {
-  .about-container {
+  .about-section {
     padding-top: 32px;
-  padding-bottom: 32px;
+    padding-bottom: 32px;
   }
 
   .content-left {
@@ -73,7 +73,7 @@
 /* DESKTOP  */
 @media screen and (min-width: 1440px) {
 
-  .about-container {
+  .about-section {
     padding-top: 64px;
     padding-bottom: 64px;
   }

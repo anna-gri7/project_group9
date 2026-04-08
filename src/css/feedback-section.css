@@ -1,6 +1,6 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
-.feedbacks-container {
+.feedback {
   max-width: 375px;
   margin: 0 auto;
   padding-top: 20px;
@@ -8,7 +8,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .feedbacks-container {
+  .feedback {
     max-width: 768px;
     padding-top: 32px;
     padding-bottom: 32px;
@@ -16,7 +16,7 @@
 }
 
 @media screen and (min-width: 1440px) {
-  .feedbacks-container {
+  .feedback {
     max-width: 1440px;
     padding-top: 64px;
     padding-bottom: 64px;

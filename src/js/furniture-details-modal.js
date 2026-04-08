@@ -2,6 +2,7 @@ import * as api from './api.js';
 import { showLoader, hideLoader } from './loader.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import Raty from 'raty-js';
 
 const BASE_URL = import.meta.env.BASE_URL;
 
@@ -23,23 +24,8 @@ const refs = {
 
 let currentSelectedColor = null;
 
-
-function generateRatingStars(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
-  let starsHTML = '';
-
-  for (let i = 0; i < 5; i++) {
-    if (i < fullStars) {
-      starsHTML += '<span class="furniture-star">★</span>';
-    } else if (i === fullStars && hasHalfStar) {
-      starsHTML += '<span class="furniture-star">★</span>';
-    } else {
-      starsHTML += '<span class="furniture-star empty">★</span>';
-    }
-  }
-
-  return starsHTML;
+function getCustomRoundedRating(rate) {
+  return Math.round(parseFloat(rate) * 2) / 2;
 }
 
 function formatDimensions(dimensions) {
@@ -51,6 +37,22 @@ function formatDimensions(dimensions) {
   return '';
 }
 
+function initRating(element, score) {
+  element.innerHTML = ''; 
+
+  const raty = new Raty(element, {
+    score: score,
+    readOnly: true,
+    half: true,
+    starType: 'i',
+    starOn: 'fas fa-star',
+    starOff: 'far fa-star',
+    starHalf: 'fas fa-star-half-alt',
+    space: false,
+  });
+
+  raty.init();
+}
 
 async function renderFurnitureDetails(furnitureId) {
   try {
@@ -66,50 +68,50 @@ async function renderFurnitureDetails(furnitureId) {
       return;
     }
 
-    console.log('Processing furniture data:', furniture);
-
     let currentIndex = 0;
 
-    if (furniture.images && furniture.images.length > 0) {
+    if (furniture.images?.length) {
       refs.mainImage.src = furniture.images[0];
       refs.mainImage.alt = furniture.name;
     }
 
-
     function renderThumbnails() {
       refs.thumbnailsList.innerHTML = '';
-      if (furniture.images && furniture.images.length > 0) {
-        furniture.images.forEach((image, index) => {
-          if (index === currentIndex) return; 
-          const li = document.createElement('li');
-          li.className = 'furniture-thumbnail';
-          li.innerHTML = `<img src="${image}" alt="Thumbnail ${index + 1}" data-index="${index}">`;
 
-          li.addEventListener('click', () => {
-            currentIndex = index;
-            refs.mainImage.src = image;
-            renderThumbnails(); 
-          });
+      furniture.images?.forEach((image, index) => {
+        if (index === currentIndex) return;
 
-          refs.thumbnailsList.appendChild(li);
+        const li = document.createElement('li');
+        li.className = 'furniture-thumbnail';
+
+        li.innerHTML = `
+          <img src="${image}" alt="Thumbnail ${index + 1}">
+        `;
+
+        li.addEventListener('click', () => {
+          currentIndex = index;
+          refs.mainImage.src = image;
+          renderThumbnails();
         });
-      }
+
+        refs.thumbnailsList.appendChild(li);
+      });
     }
 
     renderThumbnails();
 
     refs.furnitureName.textContent = furniture.name || '';
     refs.furnitureCategory.textContent = furniture.category?.name || '';
-    refs.furniturePrice.textContent = furniture.price ? `${furniture.price.toLocaleString('uk-UA')} грн` : '';
+    refs.furniturePrice.textContent = furniture.price
+      ? `${furniture.price.toLocaleString('uk-UA')} грн`
+      : '';
 
-
-    console.log('Furniture rating:', furniture.rating);
-    const rating = furniture.rate || 4;
-    refs.furnitureRating.innerHTML = generateRatingStars(rating);
-
+    const rating = getCustomRoundedRating(furniture.rate || 4);
+    initRating(refs.furnitureRating, rating);
 
     refs.colorsList.innerHTML = '';
-    if (furniture.color && furniture.color.length > 0) {
+
+    if (furniture.color?.length) {
       currentSelectedColor = furniture.color[0];
 
       furniture.color.forEach((color, index) => {
@@ -124,18 +126,14 @@ async function renderFurnitureDetails(furnitureId) {
         input.name = 'color';
         input.value = color;
         input.id = `color-${index}`;
-        if (index === 0) {
-          input.checked = true;
-        }
+        if (index === 0) input.checked = true;
 
         const circle = document.createElement('div');
         circle.className = 'furniture-color-circle';
         circle.style.backgroundColor = color;
 
-        input.addEventListener('change', (e) => {
-          if (e.target.checked) {
-            currentSelectedColor = color;
-          }
+        input.addEventListener('change', e => {
+          if (e.target.checked) currentSelectedColor = color;
         });
 
         label.appendChild(input);
@@ -145,23 +143,16 @@ async function renderFurnitureDetails(furnitureId) {
       });
     }
 
-
     refs.furnitureDescription.textContent = furniture.description || '';
 
-
-    const dimensions = furniture.dimensions || { width: 120, height: 80, depth: 60 };
-    const formattedDimensions = formatDimensions(dimensions);
-
-    if (refs.furnitureSize) {
-      refs.furnitureSize.textContent = furniture.sizes;
-    }
-
-    console.log('Furniture dimensions:', dimensions);
-
+    const dimensions = furniture.dimensions || {};
+    refs.furnitureSize.textContent =
+      furniture.sizes || formatDimensions(dimensions);
 
     toggleModal();
   } catch (error) {
-    console.error('Error rendering furniture:', error);
+    console.error(error);
+
     iziToast.show({
       message: `Помилка: ${error.message}`,
       color: 'red',
@@ -172,12 +163,9 @@ async function renderFurnitureDetails(furnitureId) {
   }
 }
 
-
 function toggleModal() {
-  if (refs.backdropBtn) {
-    refs.backdropBtn.classList.toggle('is-hidden');
-    document.body.classList.toggle('no-scroll');
-  }
+  refs.backdropBtn?.classList.toggle('is-hidden');
+  document.body.classList.toggle('no-scroll');
 }
 
 function closeModal() {
@@ -188,57 +176,44 @@ function closeModal() {
 
 function openOrderModal() {
   const orderBackdrop = document.querySelector('[data-order-modal]');
-  if (orderBackdrop && orderBackdrop.classList.contains('is-hidden')) {
+  if (orderBackdrop?.classList.contains('is-hidden')) {
     orderBackdrop.classList.remove('is-hidden');
-
-    if (!document.body.classList.contains('no-scroll')) {
-      document.body.classList.add('no-scroll');
-    }
+    document.body.classList.add('no-scroll');
   }
 }
 
-if (refs.closeBtn) {
-  refs.closeBtn.addEventListener('click', closeModal);
-}
+refs.closeBtn?.addEventListener('click', closeModal);
 
-if (refs.backdropBtn) {
-  refs.backdropBtn.addEventListener('click', (e) => {
-    if (e.target === refs.backdropBtn) {
-      closeModal();
-    }
-  });
-}
+refs.backdropBtn?.addEventListener('click', e => {
+  if (e.target === refs.backdropBtn) closeModal();
+});
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (
     e.key === 'Escape' &&
-    refs.backdropBtn &&
     !refs.backdropBtn.classList.contains('is-hidden')
   ) {
     closeModal();
   }
 });
 
+refs.orderBtn?.addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
 
-if (refs.orderBtn) {
-  refs.orderBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    closeModal();
-    setTimeout(() => {
-      openOrderModal();
-    }, 100);
-  });
-}
+  closeModal();
 
-if (refs.itemsList) {
-  refs.itemsList.addEventListener('click', async (e) => {
-    const moreInfoBtn = e.target.closest('.more-info-btn');
-    if (!moreInfoBtn) return;
+  setTimeout(() => {
+    openOrderModal();
+  }, 100);
+});
 
-    const itemCard = moreInfoBtn.closest('.item-card');
-    const furnitureId = itemCard.dataset.id;
+refs.itemsList?.addEventListener('click', async e => {
+  const btn = e.target.closest('.more-info-btn');
+  if (!btn) return;
 
-    await renderFurnitureDetails(furnitureId);
-  });
-}
+  const card = btn.closest('.item-card');
+  const furnitureId = card.dataset.id;
+
+  await renderFurnitureDetails(furnitureId);
+});
