@@ -120,7 +120,7 @@ function furnitureTemplate(item) {
     .join('');
   return `
     <li class="item-card" data-id="${item._id}">
-      <img src="${item.images[0]}" alt="${item.name}">
+      <img src="${item.images[0]}" alt="${item.name}" loading="lazy">
       <div class="furnitures-description">
         <p class="furnitures-name">${item.name}</p>
         <ul class="furnitures-colors">${colors}</ul>

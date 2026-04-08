@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
-
 * {
   margin: 0;
   padding: 0;
@@ -22,11 +20,14 @@ h2 {
   line-height: 160%;
 }
 
+.furniture-list-section {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
 .furniture-list {
   display: flex;
   flex-direction: column;
-  padding-top: 48px;
-  padding-bottom: 48px;
   gap: 40px;
 }
 
@@ -74,14 +75,15 @@ h2 {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
+  scroll-margin-top: 80px;
 }
-
 
 .item-card {
   display: flex;
   flex-direction: column;
   gap: 16px;
   transition: scale 0.2s ease;
+  scroll-margin-top: 40px;
 }
 
 .item-card:hover {
@@ -271,7 +273,7 @@ h2 {
     font-size: 48px;
   }
 
-  .furniture-list {
+  .furniture-list-section {
     padding-top: 80px;
     padding-bottom: 80px;
   }
@@ -283,6 +285,7 @@ h2 {
 
   .items {
     grid-template-columns: repeat(4, 1fr);
+    scroll-margin-top: 340px;
   }
 
   .item-card {
