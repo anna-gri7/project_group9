@@ -3,6 +3,7 @@ import { showLoader, hideLoader } from './loader.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import Raty from 'raty-js';
+import {toggleBackToTop} from "./back-to-top.js" 
 
 const BASE_URL = import.meta.env.BASE_URL;
 
@@ -148,7 +149,7 @@ async function renderFurnitureDetails(furnitureId) {
     const dimensions = furniture.dimensions || {};
     refs.furnitureSize.textContent =
       furniture.sizes || formatDimensions(dimensions);
-
+    toggleBackToTop();
     toggleModal();
   } catch (error) {
     console.error(error);
@@ -170,6 +171,7 @@ function toggleModal() {
 
 function closeModal() {
   if (!refs.backdropBtn.classList.contains('is-hidden')) {
+    toggleBackToTop();
     toggleModal();
   }
 }
@@ -180,6 +182,7 @@ function openOrderModal() {
     orderBackdrop.classList.remove('is-hidden');
     document.body.classList.add('no-scroll');
   }
+  toggleBackToTop();
 }
 
 refs.closeBtn?.addEventListener('click', closeModal);
@@ -193,6 +196,7 @@ document.addEventListener('keydown', e => {
     e.key === 'Escape' &&
     !refs.backdropBtn.classList.contains('is-hidden')
   ) {
+    toggleBackToTop();
     closeModal();
   }
 });

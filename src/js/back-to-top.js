@@ -14,3 +14,7 @@ backToTopBtn.onclick = function() {
     behavior: "smooth"
   });
 };
+
+export function toggleBackToTop() {
+  backToTopBtn.classList.toggle("hidden");
+}
