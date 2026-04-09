@@ -1,5 +1,6 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+import {toggleBackToTop} from "./back-to-top.js"
 
 const refs = {
 openBtns: document.querySelectorAll("[data-order-modal-open]"),
@@ -23,6 +24,7 @@ let currentProductId = "";
 function toggleModal() {
 refs.backdrop.classList.toggle("is-hidden");
 document.body.classList.toggle("no-scroll");
+toggleBackToTop();
 }
 window.openOrderModal = function(product) {
   currentProductId = product._id;
